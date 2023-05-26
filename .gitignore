@@ -20,29 +20,16 @@ ipch
 *.opensdf
 *.idb
 *.vcxproj
-*.vpc_crc
 *.sln
 *.res
 .vs/
-Release*/
-Debug*/
-
-*.vpc.sentinel
-*.vpc_cache
 *.vcxproj.*
 
-# OSX/Linux build products
-*.mak
-*.mak.vpc_crc
-*.xcodeproj/
-obj*/
-!devtools/*.mak
-!utils/smdlexp/smdlexp.mak
-
-# Specific Source build products
+# waf
 /game/
-_vpc_/
+/src/build/
+.waf*
+.lock-waf*
 
 # shader files
 *.tmp
-

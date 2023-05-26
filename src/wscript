@@ -1,0 +1,87 @@
+#!/usr/bin/env python
+# modified from FWGS/xash3d-fwgs
+
+from waflib import Build, Context, Logs
+from waflib.Tools import waf_unit_test
+import sys, os
+
+default_prefix = '../game'
+
+PROJECTS = [
+]
+
+def options(opt):
+	opt.load('compiler_c compiler_cxx waf_unit_test')
+
+	grp = opt.add_option_group('Common options')
+
+	grp.add_option('--cfg', action = 'store', dest = 'CFG', default = 'release',
+		help = 'build type [default: %default]')
+
+	grp.add_option('--strip', action = 'store_true', dest = 'STRIP', default = False,
+		help = 'strip libs\' additional info [default: %default]')
+
+	opt.recurse(PROJECTS)
+
+def configure(conf):
+	conf.load('compiler_c compiler_cxx')
+
+	conf.find_program('ccache', var='CCACHE')
+	conf.find_program('strip', var='STRIP')
+
+	if conf.env.DEST_OS in ['linux','android']:
+		cflags = ['-fPIC', '-std=c11', '-pthread']
+		cxxflags = ['-fPIC', '-std=c++11', '-pthread']
+		linkflags = ['-Wl,--no-undefined' ,'-pthread']
+		defines = ['CSTRIKE_REL_BUILD=1', 'RAD_TELEMETRY_DISABLED', 'GNUC', '_DLL_EXT=.so', '_LINUX', 'LINUX', '_POSIX', 'POSIX', 'GL_GLEXT_PROTOTYPES', 'DX_TO_GL_ABSTRACTION', 'USE_SDL', 'CSTRIKE15', 'VERSION_SAFE_STEAM_API_INTERFACES']
+		warnings = ['-Wall']
+
+		if conf.env.CC == 'gcc':
+			defines += ['COMPILER_GCC']
+
+		if conf.options.CFG == 'debug':
+			cflags += ['-O0','-g3']
+			cxxflags += ['-O0','-g3']
+			defines += ['DEBUG=1','_DEBUG=1']
+		elif conf.options.CFG == 'release':
+			cflags += ['-O3']
+			cxxflags += ['-O3']
+		elif conf.options.CFG == 'asan':
+			cflags += ['-O0', '-fsanitize=undefined']
+			cxxflags += ['-O0', '-fsanitize=undefined']
+			linkflags += ['-fsanitize=undefined']
+		else:
+			conf.fatal('cfg not found')
+
+		if conf.options.CFG != 'debug':
+			defines += ['NDEBUG=1','_NDEBUG=1']
+
+		if conf.env.DEST_CPU == 'x86_64' and not conf.env.DEST_SIZEOF_VOID_P == 4:
+			march = ['-march=nocona','-mtune=core2','-mfpmath=sse']
+		elif conf.env.DEST_CPU == 'x86' or (conf.env.DEST_CPU == 'x86_64' and conf.env.DEST_SIZEOF_VOID_P == 4):
+			march = ['-m32','-march=prescott','-mtune=core2','-mfpmath=sse']
+
+		conf.env.append_unique('CFLAGS', march + cflags + warnings)
+		conf.env.append_unique('CXXFLAGS', march + cxxflags + warnings)
+		conf.env.append_unique('LINKFLAGS', march + linkflags)
+		conf.env.append_unique('DEFINES', defines)
+
+		# always use ccache
+		conf.env.CC = conf.env.CCACHE + conf.env.CC
+		conf.env.CXX = conf.env.CCACHE + conf.env.CXX
+
+	conf.check_cc(cflags=cflags, linkflags=linkflags, msg='Checking for required C flags')
+	conf.check_cxx(cxxflags=cxxflags, linkflags=linkflags, msg='Checking for required C++ flags')
+
+	conf.recurse(PROJECTS)
+
+# modified from waf/playground/strip/strip_on_install.py
+def copy_fun(self, src, tgt):
+	inst_copy_fun(self, src, tgt)
+	if self.generator.bld.options.STRIP and getattr(self.generator, 'link_task', None) and self.generator.link_task.outputs[0] in self.inputs:
+		self.generator.bld.cmd_and_log(self.generator.bld.env.STRIP + [tgt], quiet=Context.BOTH)
+inst_copy_fun = Build.inst.copy_fun
+Build.inst.copy_fun = copy_fun
+
+def build(bld):
+	bld.recurse(PROJECTS)
