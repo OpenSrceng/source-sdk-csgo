@@ -8,6 +8,7 @@ import sys, os
 default_prefix = '../game'
 
 PROJECTS = [
+	'tier0'
 ]
 
 def options(opt):
@@ -35,8 +36,12 @@ def configure(conf):
 		linkflags = ['-Wl,--no-undefined' ,'-pthread']
 		defines = ['CSTRIKE_REL_BUILD=1', 'RAD_TELEMETRY_DISABLED', 'GNUC', '_DLL_EXT=.so', '_LINUX', 'LINUX', '_POSIX', 'POSIX', 'GL_GLEXT_PROTOTYPES', 'DX_TO_GL_ABSTRACTION', 'USE_SDL', 'CSTRIKE15', 'VERSION_SAFE_STEAM_API_INTERFACES']
 		warnings = ['-Wall']
+		if conf.env.CC_NAME == 'gcc':
+			warnings += ['-fdiagnostics-color=always']
+		elif conf.env.CC_NAME == 'clang':
+			warnings += ['-fcolor-diagnostics']
 
-		if conf.env.CC == 'gcc':
+		if conf.env.CC_NAME == 'gcc':
 			defines += ['COMPILER_GCC']
 
 		if conf.options.CFG == 'debug':
