@@ -65,6 +65,8 @@
 
 #ifdef __GCC__
 #define COMPILER_GCC 1
+#elif defined __clang__
+#define COMPILER_CLANG 1
 #endif
 
 #if defined( _X360 ) || defined( _PS3 )
@@ -188,7 +190,7 @@
 #endif // ! ( _PS3 && COMPILER_SNC )
 
 #ifdef __cplusplus
-#if defined( COMPILER_GCC ) || defined( COMPILER_PS3 )
+#if defined( COMPILER_GCC ) || defined( COMPILER_CLANG ) ||defined( COMPILER_PS3 )
 	#include <new>
 #else
 	#include <new.h>
@@ -248,7 +250,7 @@
 //-----------------------------------------------------------------------------
 // NOTE: All compiler defines are set up in the base VPC scripts
 // COMPILER_MSVC, COMPILER_MSVC32, COMPILER_MSVC64, COMPILER_MSVCX360
-// COMPILER_GCC
+// COMPILER_GCC, COMPILER_CLANG
 // The rationale for this is that we need COMPILER_MSVC for the pragma blocks
 // #pragma once that occur at the top of all header files, therefore we can't
 // place the defines for these in here.
@@ -407,7 +409,7 @@
 #define MSVC 1
 #endif
 
-#ifdef COMPILER_GCC
+#if defined COMPILER_GCC || COMPILER_CLANG
 #define GNUC 1
 #endif
 
@@ -827,7 +829,7 @@ typedef void * HINSTANCE;
 	#define DEFAULT_VC_WARNING( x ) __pragma(warning(default:4310) )
 
 
-#elif defined ( COMPILER_GCC ) || defined( COMPILER_SNC )
+#elif defined ( COMPILER_GCC ) || defined ( COMPILER_CLANG ) || defined( COMPILER_SNC )
 
 	#if defined( COMPILER_SNC ) || defined( PLATFORM_64BITS )
 		#define  STDCALL
@@ -1088,7 +1090,7 @@ typedef void * HINSTANCE;
 //-----------------------------------------------------------------------------
 // Stack-based allocation related helpers
 //-----------------------------------------------------------------------------
-#if defined( COMPILER_GCC ) || defined( COMPILER_SNC )
+#if defined( COMPILER_GCC ) || defined( COMPILER_CLANG ) || defined( COMPILER_SNC )
 
 	#define stackalloc( _size )		alloca( ALIGN_VALUE( _size, 16 ) )
 
@@ -1123,7 +1125,7 @@ typedef void * HINSTANCE;
 	#define DebuggerBreak()		__asm { int 3 }
 #elif COMPILER_MSVCX360
 	#define DebuggerBreak()		DebugBreak()
-#elif COMPILER_GCC
+#elif COMPILER_GCC || COMPILER_CLANG
 	#if defined( _PS3 )
 		#if defined( __SPU__ )
 			#define DebuggerBreak() __asm volatile ("stopd $0,$0,$0")
@@ -1359,7 +1361,7 @@ typedef int socklen_t;
 
 	#endif
 
-#elif defined ( COMPILER_GCC )
+#elif defined ( COMPILER_GCC ) || defined ( COMPILER_CLANG )
 
 // Works for PS3 
 	inline void SetupFPUControlWord()
@@ -2501,12 +2503,8 @@ int	_V_stricmp_NegativeForUnequal	  ( const char *s1, const char *s2 );
 // !!! NOTE: if you get a compile error here, you are using VALIGNOF on an abstract type :NOTE !!!
 #define VALIGNOF_PORTABLE( type ) ( sizeof( AlignOf_t<type> ) - sizeof( type ) )
 
-#if defined( COMPILER_GCC ) || defined( COMPILER_MSVC )
 #define VALIGNOF( type ) __alignof( type )
 #define VALIGNOF_TEMPLATE_SAFE( type ) VALIGNOF_PORTABLE( type )
-#else
-#error "PORT: Code only tested with MSVC! Must validate with new compiler, and use built-in keyword if available."
-#endif
 
 // Use ValidateAlignment to sanity-check alignment usage when allocating arrays of an aligned type
 #define ALIGN_ASSERT( pred ) { COMPILE_TIME_ASSERT( pred ); }
