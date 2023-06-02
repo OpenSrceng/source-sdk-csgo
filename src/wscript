@@ -8,7 +8,8 @@ import sys, os
 default_prefix = '../game'
 
 PROJECTS = [
-	'tier0'
+	'tier0',
+	'tier1'
 ]
 
 def options(opt):
@@ -84,6 +85,15 @@ def configure(conf):
 		conf.env.append_unique('CXXFLAGS', march + cxxflags + warnings)
 		conf.env.append_unique('LINKFLAGS', march + linkflags)
 		conf.env.append_unique('DEFINES', defines)
+
+	includes = [
+		os.path.abspath('common'),
+		os.path.abspath('public'),
+		os.path.abspath('public/tier0'),
+		os.path.abspath('public/tier1'),
+		os.path.abspath('thirdparty/SDL2')
+	]
+	conf.env.append_unique('INCLUDES', includes)
 
 	if conf.options.CCACHE:
 		conf.env.CC = conf.env.CCACHE + conf.env.CC
