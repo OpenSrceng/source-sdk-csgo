@@ -102,7 +102,23 @@ def configure(conf):
 	conf.check_cc(cflags=cflags, linkflags=linkflags, msg='Checking for required C flags')
 	conf.check_cxx(cxxflags=cxxflags, linkflags=linkflags, msg='Checking for required C++ flags')
 
-	conf.recurse(PROJECTS)
+	for name in PROJECTS:	
+		depth_push(name)
+		saveenv = conf.env
+		conf.setenv(name, conf.env)
+		conf.env.ENVNAME = name
+		conf.recurse(name)
+		conf.setenv('')
+		conf.env = saveenv
+		depth_pop()
+
+DEPTH = ''
+def depth_push(path):
+	global DEPTH
+	DEPTH = os.path.join(DEPTH, path)
+def depth_pop():
+	global DEPTH
+	DEPTH = os.path.dirname(DEPTH)
 
 # modified from waf/playground/strip/strip_on_install.py
 def copy_fun(self, src, tgt):
@@ -113,4 +129,9 @@ inst_copy_fun = Build.inst.copy_fun
 Build.inst.copy_fun = copy_fun
 
 def build(bld):
-	bld.recurse(PROJECTS)
+	bld.load_envs()
+	for name in PROJECTS:
+		saveenv = bld.env
+		bld.env = bld.all_envs[name]
+		bld.recurse(name)
+		bld.env = saveenv
