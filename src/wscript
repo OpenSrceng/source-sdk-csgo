@@ -22,6 +22,9 @@ def options(opt):
 	grp.add_option('--cfg', action = 'store', dest = 'CFG', default = 'release',
 		help = 'build type [default: %default]')
 
+	grp.add_option('--ccache', action = 'store_true', dest = 'CCACHE', default = False,
+		help = 'build with ccache [default: %default]')
+
 	grp.add_option('--strip', action = 'store_true', dest = 'STRIP', default = False,
 		help = 'strip libs\' additional info [default: %default]')
 
@@ -30,8 +33,10 @@ def options(opt):
 def configure(conf):
 	conf.load('compiler_c compiler_cxx')
 
-	conf.find_program('ccache', var='CCACHE')
-	conf.find_program('strip', var='STRIP')
+	if conf.options.CCACHE:
+		conf.find_program('ccache', var='CCACHE')
+	if conf.options.STRIP:
+		conf.find_program('strip', var='STRIP')
 
 	defines = ['CSTRIKE_REL_BUILD=1','RAD_TELEMETRY_DISABLED','CSTRIKE15','VERSION_SAFE_STEAM_API_INTERFACES']
 
@@ -80,7 +85,7 @@ def configure(conf):
 		conf.env.append_unique('LINKFLAGS', march + linkflags)
 		conf.env.append_unique('DEFINES', defines)
 
-		# always use ccache
+	if conf.options.CCACHE:
 		conf.env.CC = conf.env.CCACHE + conf.env.CC
 		conf.env.CXX = conf.env.CCACHE + conf.env.CXX
 
