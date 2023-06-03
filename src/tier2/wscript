@@ -1,0 +1,63 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	pass
+
+def build(bld):
+	sources = [
+		File	(['beamsegdraw.cpp']),
+		File	(['defaultfilesystem.cpp']),
+		File	(['fileutils.cpp']),
+		File	(['keybindings.cpp']),
+		File	(['../public/map_utils.cpp']),
+		File	(['../public/materialsystem/MaterialSystemUtil.cpp']),
+		File	(['meshutils.cpp']),
+		File	(['p4helpers.cpp']),
+		File	(['renderutils.cpp']),
+		File	(['riff.cpp']),
+		File	(['soundutils.cpp']),
+		File	(['tier2.cpp']),
+		File	(['tier2_logging.cpp']),
+		File	(['tokenreader.cpp']),
+		File	(['util_init.cpp']),
+		File	(['utlstreambuffer.cpp']),
+		File	(['vconfig.cpp']),
+		File	(['schemaclassbinding.cpp']),
+		File	(['socketcreator.cpp']),
+		File	(['resourceprecacher.cpp']),
+		File	(['interval.cpp'])
+	]
+
+	includes = [
+		'.',
+		'../public/tier2'
+	]
+
+	libs = []
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.stlib(
+		target   = 'tier2',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)

@@ -10,8 +10,7 @@ class File:
 		return True
 
 def options(opt):
-	# stub
-	return
+	pass
 
 def configure(conf):
 	conf.env.append_unique('DEFINES', ['TIER0_DLL_EXPORT', 'CROSS_PLATFORM_VERSION=1'])

@@ -9,7 +9,8 @@ default_prefix = '../game'
 
 PROJECTS = [
 	'tier0',
-	'tier1'
+	'tier1',
+	'tier2'
 ]
 
 def options(opt):
