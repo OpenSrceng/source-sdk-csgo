@@ -32,7 +32,6 @@ def build(bld):
 	]
 
 	includes = [
-		'..',
 		'../../public/mathlib'
 	]
 

@@ -64,9 +64,7 @@ def build(bld):
 		File	(['dlmalloc/malloc.cpp'], lambda x: x.env.DEST_OS == 'win32')
 	]
 
-	includes = [
-		'.'
-	]
+	includes = []
 
 	libs = []
 

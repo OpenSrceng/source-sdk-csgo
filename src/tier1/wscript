@@ -65,9 +65,7 @@ def build(bld):
 		File	(['../utils/lzma/C/LzmaDec.c'])
 	]
 
-	includes = [
-		'.'
-	]
+	includes = []
 
 	libs = []
 

@@ -41,7 +41,6 @@ def build(bld):
 	]
 
 	includes = [
-		'.',
 		'../public/tier2'
 	]
 

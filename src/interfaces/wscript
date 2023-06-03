@@ -17,11 +17,7 @@ def configure(conf):
 
 def build(bld):
 	sources = [
-		File	(['tier3.cpp']),
-		File	(['mdlutils.cpp']),
-		File	(['choreoutils.cpp']),
-		File	(['scenetokenprocessor.cpp']),
-		File	(['studiohdrstub.cpp'])
+		File	(['interfaces.cpp'])
 	]
 
 	includes = []
@@ -35,7 +31,7 @@ def build(bld):
 		sources_platform += i.name
 
 	bld.stlib(
-		target   = 'tier3',
+		target   = 'interfaces',
 		features = 'c cxx',
 		source   = sources_platform,
 		includes = includes,

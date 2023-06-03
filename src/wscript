@@ -12,6 +12,7 @@ PROJECTS = [
 	'tier1',
 	'tier2',
 	'tier3',
+	'interfaces',
 	'mathlib',
 	'mathlib/extended'
 ]
