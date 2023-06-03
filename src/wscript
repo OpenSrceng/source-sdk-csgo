@@ -27,7 +27,7 @@ def options(opt):
 		help = 'build for 64bits platform [default: %default]')
 
 	grp.add_option('--cfg', action = 'store', dest = 'CFG', default = 'release',
-		help = 'build type [default: %default]')
+		help = 'build types [default: %default]')
 
 	grp.add_option('--ccache', action = 'store_true', dest = 'CCACHE', default = False,
 		help = 'build with ccache [default: %default]')
@@ -35,7 +35,8 @@ def options(opt):
 	grp.add_option('--strip', action = 'store_true', dest = 'STRIP', default = False,
 		help = 'strip libs\' additional info [default: %default]')
 
-	opt.recurse(PROJECTS)
+	grp.add_option('--ndk', action = 'store_true', dest = 'NDK', default = False,
+		help = 'build with android ndk [default: %default]')
 
 def configure(conf):
 	conf.load('compiler_c compiler_cxx')
@@ -50,7 +51,7 @@ def configure(conf):
 	if conf.env.DEST_OS in ['linux','android']:
 		cflags = ['-fPIC','-std=c11','-pthread']
 		cxxflags = ['-fPIC','-std=c++11','-pthread']
-		linkflags = ['-pthread']
+		linkflags = ['-pthread','-ldl','-no-canonical-prefixes','-Wl,--no-warn-mismatch']
 		defines += ['GNUC','_DLL_EXT=.so','_LINUX','LINUX','_POSIX','POSIX','GL_GLEXT_PROTOTYPES','DX_TO_GL_ABSTRACTION','USE_SDL']
 		warnings = ['-Wall']
 
@@ -60,7 +61,21 @@ def configure(conf):
 		elif conf.env.CC_NAME == 'clang':
 			warnings += ['-fcolor-diagnostics']
 			defines += ['COMPILER_CLANG']
-		
+
+		ndkflags = []
+		march = []
+
+		if conf.options.NDK:
+			conf.env.DEST_CPU = 'arm'
+			ndk_path = os.environ.get('NDK_PATH')
+			conf.env.CC = [ndk_path + '/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc']
+			conf.env.CXX = [ndk_path + '/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-g++']
+			conf.env.LINK_CXX = conf.env.LINK_CC = [ndk_path + '/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc']
+			ndkflags += ['--sysroot=' + ndk_path + '/platforms/android-21/arch-arm','-I' + ndk_path + '/sources/android/support/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include']
+			march += ['-march=armv7-a','-mtune=cortex-a15','-mthumb','-mfloat-abi=hard','-mfpu=neon','-mcpu=cortex-a9','-mvectorize-with-neon-quad']
+			linkflags += ['-lm_hard','-Wl,--fix-cortex-a8']
+			defines += ['ANDROID']
+
 		if not conf.env.CC_NAME == 'clang' and not conf.options.CFG == 'asan':
 			linkflags += ['-Wl,--no-undefined']
 
@@ -72,24 +87,24 @@ def configure(conf):
 			cflags += ['-O3']
 			cxxflags += ['-O3']
 		elif conf.options.CFG == 'asan':
-			cflags += ['-O1','-g','-fsanitize=address']
-			cxxflags += ['-O1','-g','-fsanitize=address']
+			cflags += ['-O0','-g','-fsanitize=address']
+			cxxflags += ['-O0','-g','-fsanitize=address']
 			linkflags += ['-fsanitize=address']
 		else:
 			conf.fatal('cfg not found')
 
 		if conf.options.CFG != 'debug':
-			defines += ['NDEBUG=1','_NDEBUG=1']
+			defines += ['NDEBUG=1']
 
 		if conf.env.DEST_CPU == 'x86_64' and conf.options.PLATFORM_64BITS:
-			march = ['-march=nocona','-mtune=core2','-mfpmath=sse']
+			march += ['-march=nocona','-mtune=core2','-mfpmath=sse']
 			defines += ['PLATFORM_64BITS']
-		elif conf.env.DEST_CPU == 'x86' or not conf.options.PLATFORM_64BITS:
-			march = ['-m32','-march=prescott','-mtune=core2','-mfpmath=sse']
+		elif conf.env.DEST_CPU in ['x86','x86_64'] and not conf.options.PLATFORM_64BITS:
+			march += ['-m32','-march=prescott','-mtune=core2','-mfpmath=sse']
 
-		conf.env.append_unique('CFLAGS', march + cflags + warnings)
-		conf.env.append_unique('CXXFLAGS', march + cxxflags + warnings)
-		conf.env.append_unique('LINKFLAGS', march + linkflags)
+		conf.env.append_unique('CFLAGS', march + cflags + warnings + ndkflags)
+		conf.env.append_unique('CXXFLAGS', march + cxxflags + warnings + ndkflags)
+		conf.env.append_unique('LINKFLAGS', march + linkflags + ndkflags)
 		conf.env.append_unique('DEFINES', defines)
 
 	includes = [
