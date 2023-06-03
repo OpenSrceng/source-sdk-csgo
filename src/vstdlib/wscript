@@ -1,0 +1,52 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	conf.env.append_unique('DEFINES', ['VSTDLIB_DLL_EXPORT'])
+ 
+def build(bld):
+	sources = [
+		File	(['coroutine.cpp']),
+		File	(['getstackptr64.masm'], lambda x: x.env.DEST_OS == 'win32' and x.options.PLATFORM_64BITS),
+		File	(['cvar.cpp']),
+		File	(['jobthread.cpp']),
+		File	(['keyvaluessystem.cpp']),
+		File	(['osversion.cpp'], lambda x: x.env.DEST_OS == 'win32'),
+		File	(['processutils.cpp'], lambda x: x.env.DEST_OS == 'win32'),
+		File	(['random.cpp']),
+		File	(['vcover.cpp']),
+		File	(['eventsystem.cpp']),
+		File	(['vstrtools.cpp']),
+		File	(['vstdlib_strtools.cpp'])
+	]
+
+	includes = []
+
+	libs = []
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.shlib(
+		target   = 'vstdlib',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		install_path = bld.env.BINDIR,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)

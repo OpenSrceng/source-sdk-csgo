@@ -13,6 +13,7 @@ PROJECTS = [
 	'tier2',
 	'tier3',
 	'interfaces',
+	'vstdlib',
 	'mathlib',
 	'mathlib/extended'
 ]
