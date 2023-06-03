@@ -1,0 +1,75 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	conf.env.append_unique('DEFINES', ['MATHLIB_LIB'])
+
+def build(bld):
+	sources = [
+		File	(['expressioncalculator.cpp']),
+		File	(['color_conversion.cpp']),
+		File	(['cholesky.cpp']),
+		File	(['halton.cpp']),
+		File	(['lightdesc.cpp']),
+		File	(['mathlib_base.cpp']),
+		File	(['powsse.cpp']),
+		File	(['sparse_convolution_noise.cpp']),
+		File	(['sseconst.cpp']),
+		File	(['sse.cpp']),
+		File	(['ssenoise.cpp']),
+		File	(['anorms.cpp']),
+		File	(['bumpvects.cpp']),
+		File	(['IceKey.cpp']),
+		File	(['kdop.cpp']),
+		File	(['imagequant.cpp']),
+		File	(['spherical.cpp']),
+		File	(['polyhedron.cpp']),
+		File	(['quantize.cpp']),
+		File	(['randsse.cpp']),
+		File	(['simdvectormatrix.cpp']),
+		File	(['vmatrix.cpp']),
+		File	(['almostequal.cpp']),
+		File	(['simplex.cpp']),
+		File	(['eigen.cpp']),
+		File	(['box_buoyancy.cpp']),
+		File	(['camera.cpp']),
+		File	(['planefit.cpp']),
+		File	(['polygon.cpp']),
+		File	(['volumeculler.cpp']),
+		File	(['transform.cpp']),
+		File	(['sphere.cpp']),
+		File	(['capsule.cpp'])
+	]
+
+	includes = [
+		'.',
+		'../public/mathlib'
+	]
+
+	libs = []
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.stlib(
+		target   = 'mathlib',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)

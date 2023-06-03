@@ -11,7 +11,9 @@ PROJECTS = [
 	'tier0',
 	'tier1',
 	'tier2',
-	'tier3'
+	'tier3',
+	'mathlib',
+	'mathlib/extended'
 ]
 
 def options(opt):
