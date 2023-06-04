@@ -71,7 +71,7 @@ def configure(conf):
 				conf.env.DEST_CPU = 'aarch64'
 				conf.env.CC = conf.env.LINK_CXX = conf.env.LINK_CC = [ndk_path + '/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-gcc']
 				conf.env.CXX = [ndk_path + '/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-g++']
-				ndkflags += ['--sysroot=' + ndk_path + '/platforms/android-21/arch-arm64','-I' + ndk_path + '/sources/android/support/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/arm64-v8a/include','-L' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/arm64-v8a']
+				ndkflags += ['--sysroot=' + ndk_path + '/platforms/android-21/arch-arm64','-I' + ndk_path + '/sources/android/support/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/arm64-v8a/include','-L' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/arm64-v8a','-L' + ndk_path + '/sources/android/support/libs/arm64-v8a']
 				march += ['-march=armv8-a','-mtune=cortex-a53','-mcpu=cortex-a53']
 				linkflags += ['-lm','-lgnustl_static']
 			else:
@@ -79,10 +79,10 @@ def configure(conf):
 				ndk_path = os.environ.get('NDK_PATH')
 				conf.env.CC = conf.env.LINK_CXX = conf.env.LINK_CC = [ndk_path + '/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc']
 				conf.env.CXX = [ndk_path + '/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-g++']
-				ndkflags += ['--sysroot=' + ndk_path + '/platforms/android-21/arch-arm','-I' + ndk_path + '/sources/android/support/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a-hard/include','-L' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a-hard']
+				ndkflags += ['--sysroot=' + ndk_path + '/platforms/android-21/arch-arm','-I' + ndk_path + '/sources/android/support/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a-hard/include','-L' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a-hard','-L' + ndk_path + '/sources/android/support/libs/armeabi-v7a']
 				march += ['-march=armv7-a','-mtune=cortex-a15','-mthumb','-mfloat-abi=hard','-mfpu=neon','-mcpu=cortex-a9','-mvectorize-with-neon-quad']
 				linkflags += ['-lm_hard','-lgnustl_static','-Wl,--fix-cortex-a8']
-
+			linkflags += ['-landroid_support']
 			defines += ['ANDROID']
 
 		if not conf.env.CC_NAME == 'clang' and not conf.options.CFG == 'asan':
