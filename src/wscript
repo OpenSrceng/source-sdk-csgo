@@ -79,7 +79,7 @@ def configure(conf):
 				ndk_path = os.environ.get('NDK_PATH')
 				conf.env.CC = conf.env.LINK_CXX = conf.env.LINK_CC = [ndk_path + '/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc']
 				conf.env.CXX = [ndk_path + '/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-g++']
-				ndkflags += ['--sysroot=' + ndk_path + '/platforms/android-21/arch-arm','-I' + ndk_path + '/sources/android/support/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include','-L' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a']
+				ndkflags += ['--sysroot=' + ndk_path + '/platforms/android-21/arch-arm','-I' + ndk_path + '/sources/android/support/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a-hard/include','-L' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a-hard']
 				march += ['-march=armv7-a','-mtune=cortex-a15','-mthumb','-mfloat-abi=hard','-mfpu=neon','-mcpu=cortex-a9','-mvectorize-with-neon-quad']
 				linkflags += ['-lm_hard','-lgnustl_static','-Wl,--fix-cortex-a8']
 
