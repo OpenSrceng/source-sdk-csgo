@@ -144,6 +144,9 @@
 	#include <signal.h>
 	#include <stdarg.h>
 #endif
+#if (defined(__arm__) || defined(__aarch64__)) && defined(ANDROID)
+	#include <time.h>
+#endif
 
 #endif
 
@@ -1811,7 +1814,11 @@ extern "C" unsigned __int64 __rdtsc();
 
 inline uint64 Plat_Rdtsc()
 {
-#if defined( _X360 )
+#if (defined(__arm__) || defined(__aarch64__)) && defined(ANDROID)
+	struct timespec ts;
+	clock_gettime(CLOCK_REALTIME, &ts);
+	return ts.tv_sec * 1000000000ULL + ts.tv_nsec;
+#elif defined( _X360 )
 	return ( uint64 )__mftb32();
 #elif defined( _WIN64 )
 	return ( uint64 )__rdtsc();
