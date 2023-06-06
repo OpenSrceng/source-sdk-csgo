@@ -84,6 +84,7 @@ def configure(conf):
 				linkflags += ['-lm_hard','-lgnustl_static','-Wl,--fix-cortex-a8']
 			linkflags += ['-landroid_support']
 			defines += ['ANDROID']
+			out, err = conf.cmd_and_log(conf.env.CC + ['-dM', '-E', '-'], output=0, input='\n'.encode(), env=conf.env.env)
 
 		if not conf.env.CC_NAME == 'clang' and not conf.options.CFG == 'asan':
 			linkflags += ['-Wl,--no-undefined']
