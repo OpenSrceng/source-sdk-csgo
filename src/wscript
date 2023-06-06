@@ -105,8 +105,9 @@ def configure(conf):
 		if conf.options.CFG != 'debug':
 			defines += ['NDEBUG=1']
 
-		if conf.env.DEST_CPU == 'x86_64' and conf.options.PLATFORM_64BITS:
-			march += ['-march=nocona','-mtune=core2','-mfpmath=sse']
+		if conf.options.PLATFORM_64BITS:
+			if conf.env.DEST_CPU == 'x86_64':
+				march += ['-march=nocona','-mtune=core2','-mfpmath=sse']
 			defines += ['PLATFORM_64BITS']
 		elif conf.env.DEST_CPU in ['x86','x86_64'] and not conf.options.PLATFORM_64BITS:
 			march += ['-m32','-march=prescott','-mtune=core2','-mfpmath=sse']
