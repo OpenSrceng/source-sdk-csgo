@@ -45,7 +45,7 @@ struct CpuIdResult_t
 
 static bool cpuid( unsigned long function, CpuIdResult_t &out )
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( _X360 ) || defined( _PS3 ) || defined( __arm__ ) || defined( __aarch64__ )
 	return false;
 #elif defined(GNUC)
 	unsigned long out_eax,out_ebx,out_ecx,out_edx;
@@ -124,7 +124,7 @@ static bool cpuid( unsigned long function, CpuIdResult_t &out )
 
 static bool cpuidex( unsigned long function, unsigned long subfunction, CpuIdResult_t &out )
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( _X360 ) || defined( _PS3 ) || defined( __arm__ ) || defined( __aarch64__ )
 	return false;
 #elif defined(GNUC)
 	unsigned long out_eax, out_ebx, out_ecx, out_edx;
@@ -212,72 +212,20 @@ static CpuIdResult_t cpuidex( unsigned long function, unsigned long subfunction 
 	return out;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: This is a bit of a hack because it appears 
-// Output : Returns true on success, false on failure.
-//-----------------------------------------------------------------------------
-static bool IsWin98OrOlder()
-{
-#if defined( _X360 ) || defined( _PS3 ) || defined( POSIX )
-	return false;
-#else
-	bool retval = false;
-
-	OSVERSIONINFOEX osvi;
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	
-	BOOL bOsVersionInfoEx = GetVersionEx ((OSVERSIONINFO *) &osvi);
-	if( !bOsVersionInfoEx )
-	{
-		// If OSVERSIONINFOEX doesn't work, try OSVERSIONINFO.
-		
-		osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
-		if ( !GetVersionEx ( (OSVERSIONINFO *) &osvi) )
-		{
-			Error( _T("IsWin98OrOlder:  Unable to get OS version information") );
-		}
-	}
-
-	switch (osvi.dwPlatformId)
-	{
-	case VER_PLATFORM_WIN32_NT:
-		// NT, XP, Win2K, etc. all OK for SSE
-		break;
-	case VER_PLATFORM_WIN32_WINDOWS:
-		// Win95, 98, Me can't do SSE
-		retval = true;
-		break;
-	case VER_PLATFORM_WIN32s:
-		// Can't really run this way I don't think...
-		retval = true;
-		break;
-	default:
-		break;
-	}
-
-	return retval;
-#endif
-}
-
-
 static bool CheckSSETechnology(void)
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( __arm__ ) || defined( __aarch64__ )
+	return false;
+#elif defined( _X360 ) || defined( _PS3 )
 	return true;
 #else
-	if ( IsWin98OrOlder() )
-	{
-		return false;
-	}
-
     return ( cpuid( 1 ).edx & 0x2000000L ) != 0;
 #endif
 }
 
 static bool CheckSSE2Technology(void)
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( _X360 ) || defined( _PS3 ) || defined( __arm__ ) || defined( __aarch64__ )
 	return false;
 #else
     return ( cpuid( 1 ).edx & 0x04000000 ) != 0;
@@ -295,7 +243,7 @@ bool CheckSSE3Technology(void)
 
 bool CheckSSSE3Technology(void)
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( _X360 ) || defined( _PS3 ) || defined( __arm__ ) || defined( __aarch64__ )
 	return false;
 #else
 	// SSSE 3 is implemented by both Intel and AMD
@@ -306,7 +254,7 @@ bool CheckSSSE3Technology(void)
 
 bool CheckSSE41Technology(void)
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( _X360 ) || defined( _PS3 ) || defined( __arm__ ) || defined( __aarch64__ )
 	return false;
 #else
 	// SSE 4.1 is implemented by both Intel and AMD
@@ -318,7 +266,7 @@ bool CheckSSE41Technology(void)
 
 bool CheckSSE42Technology(void)
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( _X360 ) || defined( _PS3 ) || defined( __arm__ ) || defined( __aarch64__ )
 	return false;
 #else
 	// SSE4.2 is an Intel-only feature
@@ -334,7 +282,7 @@ bool CheckSSE42Technology(void)
 
 bool CheckSSE4aTechnology( void )
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( _X360 ) || defined( _PS3 ) || defined( __arm__ ) || defined( __aarch64__ )
 	return false;
 #else
 	// SSE 4a is an AMD-only feature
@@ -350,7 +298,7 @@ bool CheckSSE4aTechnology( void )
 
 static bool Check3DNowTechnology(void)
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( _X360 ) || defined( _PS3 ) || defined( __arm__ ) || defined( __aarch64__ )
 	return false;
 #else
 	if ( cpuid( 0x80000000 ).eax > 0x80000000L )
@@ -363,7 +311,7 @@ static bool Check3DNowTechnology(void)
 
 static bool CheckCMOVTechnology()
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( _X360 ) || defined( _PS3 ) || defined( __arm__ ) || defined( __aarch64__ )
 	return false;
 #else
 	return ( cpuid( 1 ).edx & ( 1 << 15 ) ) != 0;
@@ -372,7 +320,7 @@ static bool CheckCMOVTechnology()
 
 static bool CheckFCMOVTechnology(void)
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( _X360 ) || defined( _PS3 ) || defined( __arm__ ) || defined( __aarch64__ )
 	return false;
 #else
 	return ( cpuid( 1 ).edx & ( 1 << 16 ) ) != 0;
@@ -381,7 +329,7 @@ static bool CheckFCMOVTechnology(void)
 
 static bool CheckRDTSCTechnology(void)
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( _X360 ) || defined( _PS3 ) || defined( __arm__ ) || defined( __aarch64__ )
 	return false;
 #else
 	return ( cpuid( 1 ).edx & 0x10 ) != 0;
@@ -405,7 +353,9 @@ bool s_bCpuBrandInitialized = false;
 // Return the Processor's vendor identification string, or "Generic_x86" if it doesn't exist on this CPU
 const tchar* GetProcessorVendorId()
 {
-#if defined( _X360 ) || defined( _PS3 )
+#if defined( __arm__ ) || defined( __aarch64__ )
+	return "ARM";
+#elif defined( _X360 ) || defined( _PS3 )
 	return "PPC";
 #else
 	if ( s_bCpuVendorIdInitialized )
@@ -444,7 +394,9 @@ const tchar* GetProcessorVendorId()
 
 const tchar* GetProcessorBrand()
 {
-#if defined( _X360 )
+#if defined( __arm__ ) || defined( __aarch64__ )
+	return "ARM";
+#elif defined( _X360 )
 	return "Xenon";
 #elif defined( _PS3 )
 	return "Cell Broadband Engine";
@@ -810,6 +762,25 @@ const CPUInformation& GetCPUInformation()
 
 #endif
 
+#if defined(__arm__) || defined(__aarch64__)
+	// Determine Processor Features:
+	pi.m_bRDTSC = CheckRDTSCTechnology();
+	pi.m_bCMOV = CheckCMOVTechnology();
+	pi.m_bFCMOV = CheckFCMOVTechnology();
+	pi.m_bMMX = false;
+	pi.m_bSSE = CheckSSETechnology();
+	pi.m_bSSE2 = CheckSSE2Technology();
+	pi.m_bSSE3 = CheckSSE3Technology();
+	pi.m_bSSSE3 = CheckSSSE3Technology();
+	pi.m_bSSE4a = CheckSSE4aTechnology();
+	pi.m_bSSE41 = CheckSSE41Technology();
+	pi.m_bSSE42 = CheckSSE42Technology();
+	pi.m_b3DNow = Check3DNowTechnology();
+	pi.m_bAVX	= false;
+	pi.m_szProcessorID = ( tchar* )GetProcessorVendorId();
+	pi.m_szProcessorBrand = ( tchar* )GetProcessorBrand();
+	pi.m_bHT = ( pi.m_nPhysicalProcessors < pi.m_nLogicalProcessors ); //HTSupported();
+#else
 	CpuIdResult_t cpuid0 = cpuid( 0 );
 	if ( cpuid0.eax >= 1 )
 	{
@@ -920,6 +891,8 @@ const CPUInformation& GetCPUInformation()
 			pi.m_nL2CacheSizeKb = ( cpuid( 0x80000006 ).ecx >> 16 );
 		}
 	}
+#endif
+
 	return pi;
 }
 

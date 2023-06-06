@@ -1137,7 +1137,7 @@ typedef void * HINSTANCE;
 		#endif
 	#elif defined( OSX )
 		#define DebuggerBreak()  if ( Plat_IsInDebugSession() ) asm( "int3" ); else { raise(SIGTRAP); }
-	#elif defined( PLATFORM_CYGWIN ) || defined( PLATFORM_POSIX )
+	#elif defined( PLATFORM_CYGWIN ) || defined( PLATFORM_POSIX ) && !defined( __arm__ ) && !defined( __aarch64__ )
 		#define DebuggerBreak()		__asm__( "int $0x3;")
 	#else
 		#define DebuggerBreak()	raise(SIGTRAP)
