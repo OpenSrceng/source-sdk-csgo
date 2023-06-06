@@ -66,7 +66,11 @@ def configure(conf):
 		march = []
 
 		if conf.options.NDK:
-			ndk_path = os.environ.get('NDK_PATH')
+			if 'NDK_PATH' in os.environ:
+				ndk_path = os.environ.get('NDK_PATH')
+			else:
+				conf.fatal('Set NDK_PATH environment variable pointing to the root of Android NDK!')
+
 			if conf.options.PLATFORM_64BITS:
 				conf.env.DEST_CPU = 'aarch64'
 				conf.env.CC = conf.env.LINK_CXX = conf.env.LINK_CC = [ndk_path + '/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-gcc']
