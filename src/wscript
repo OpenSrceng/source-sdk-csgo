@@ -92,6 +92,8 @@ def configure(conf):
 
 		if not conf.env.CC_NAME == 'clang' and not conf.options.CFG == 'asan':
 			linkflags += ['-Wl,--no-undefined']
+		if conf.env.CC_NAME == 'clang':
+			linkflags += ['-stdlib=libstdc++']
 
 		if conf.options.CFG == 'debug':
 			cflags += ['-O0','-g3']
