@@ -127,7 +127,7 @@ float FASTCALL _SSE_VectorNormalize (Vector& vec)
 			mulps		xmm4, xmm1			// r4 = vx * 1/radius, vy * 1/radius, vz * 1/radius, X
 			movaps		[edx], xmm4			// v = vx * 1/radius, vy * 1/radius, vz * 1/radius, X
 		}
-#elif _WIN64
+#elif defined(_WIN64) || defined(__arm__) || defined(__aarch64__)
 		// Inline assembly isn't allowed in 64-bit MSVC. Sadness.
 		float recipSqrt = FastRSqrt(  vec.x * vec.x + vec.y * vec.y + vec.z * vec.z );
 		r[ 0 ] = vec.x * recipSqrt;
@@ -451,7 +451,7 @@ float FastCos( float x )
 		movss   x,    xmm0
 		
 	}
-#elif defined( _WIN64 )
+#elif defined( _WIN64 ) || defined(__arm__) || defined(__aarch64__)
 	return cosf( x );
 #elif POSIX
 	

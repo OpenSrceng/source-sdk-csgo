@@ -4,7 +4,19 @@
 
 #include "tier0/platform.h"
 
-#ifdef GNUC
+#if defined(__arm__) || defined(__aarch64__)
+
+#include <time.h>
+
+inline int GetHardwareClockFast( void )
+{
+	struct timespec ts;
+	clock_gettime(CLOCK_REALTIME, &ts);
+	return ts.tv_sec * 1000000000ULL + ts.tv_nsec;
+}
+
+#elif defined(GNUC)
+
 inline int GetHardwareClockFast( void )
 {
 	unsigned long long int nRet;

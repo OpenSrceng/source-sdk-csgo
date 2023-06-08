@@ -6,7 +6,9 @@
 #ifndef SSEMATH_H
 #define SSEMATH_H
 
-#if defined( _X360 )
+#if defined(__arm__) || defined(__aarch64__)
+#include <sse2neon.h>
+#elif defined( _X360 )
 #include <xboxmath.h>
 #elif defined ( _PS3 )
 #include <vectormath/c/vectormath_aos.h>

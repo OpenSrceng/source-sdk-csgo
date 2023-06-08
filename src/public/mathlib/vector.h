@@ -27,8 +27,12 @@
 #endif
 
 #ifndef PLATFORM_PPC // we want our linux with xmm support
+#if defined(__arm__) || defined(__aarch64__)
+#include <sse2neon.h>
+#else
 // For MMX intrinsics
 #include <xmmintrin.h>
+#endif
 #endif
 
 #ifndef ALIGN16_POST

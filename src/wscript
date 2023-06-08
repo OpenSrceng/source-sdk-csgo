@@ -48,20 +48,12 @@ def configure(conf):
 
 	defines = ['CSTRIKE_REL_BUILD=1','RAD_TELEMETRY_DISABLED','CSTRIKE15','VERSION_SAFE_STEAM_API_INTERFACES']
 
-	if conf.env.DEST_OS in ['linux','android']:
+	if conf.env.DEST_OS in 'linux':
 		cflags = ['-fPIC','-std=c11','-pthread']
 		cxxflags = ['-fPIC','-std=c++11','-pthread']
 		linkflags = ['-pthread','-ldl','-no-canonical-prefixes','-Wl,--no-warn-mismatch']
 		defines += ['GNUC','_DLL_EXT=.so','_LINUX','LINUX','_POSIX','POSIX','GL_GLEXT_PROTOTYPES','DX_TO_GL_ABSTRACTION','USE_SDL']
 		warnings = ['-Wall']
-
-		if conf.env.CC_NAME == 'gcc':
-			warnings += ['-fdiagnostics-color=always']
-			defines += ['COMPILER_GCC']
-		elif conf.env.CC_NAME == 'clang':
-			warnings += ['-fcolor-diagnostics']
-			defines += ['COMPILER_CLANG']
-
 		flags = []
 		march = []
 
@@ -70,25 +62,26 @@ def configure(conf):
 				ndk_path = os.environ.get('NDK_PATH')
 			else:
 				conf.fatal('Set NDK_PATH environment variable pointing to the root of Android NDK!')
-
 			if conf.options.PLATFORM_64BITS:
 				conf.env.DEST_CPU = 'aarch64'
-				conf.env.CC = conf.env.LINK_CXX = conf.env.LINK_CC = [ndk_path + '/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-gcc']
-				conf.env.CXX = [ndk_path + '/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-g++']
-				flags += ['--sysroot=' + ndk_path + '/platforms/android-21/arch-arm64','-I' + ndk_path + '/sources/android/support/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/arm64-v8a/include','-L' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/arm64-v8a','-L' + ndk_path + '/sources/android/support/libs/arm64-v8a']
+				conf.env.CC  = conf.env.LINK_CC  = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android28-clang']
+				conf.env.CXX = conf.env.LINK_CXX = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android28-clang++']
+				conf.env.AR  = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar']
+				conf.env.CC_NAME = conf.env.COMPILER_CC = 'clang'
+				conf.env.COMPILER_CXX = 'clang++'
+				cxxflags += ['-I' + ndk_path + '/sources/cxx-stl/llvm-libc++/include']
 				march += ['-march=armv8-a','-mtune=cortex-a53','-mcpu=cortex-a53']
-				linkflags += ['-lm']
 			else:
-				conf.env.DEST_CPU = 'arm'
-				ndk_path = os.environ.get('NDK_PATH')
-				conf.env.CC = conf.env.LINK_CXX = conf.env.LINK_CC = [ndk_path + '/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc']
-				conf.env.CXX = [ndk_path + '/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-g++']
-				flags += ['--sysroot=' + ndk_path + '/platforms/android-21/arch-arm','-I' + ndk_path + '/sources/android/support/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/include','-I' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a-hard/include','-L' + ndk_path + '/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a-hard','-L' + ndk_path + '/sources/android/support/libs/armeabi-v7a']
-				march += ['-march=armv7-a','-mtune=cortex-a15','-mthumb','-mfloat-abi=hard','-mfpu=neon','-mcpu=cortex-a9','-mvectorize-with-neon-quad']
-				linkflags += ['-lm_hard']
-			linkflags += ['-lgnustl_static','-landroid_support']
+				conf.fatal('Doesn\'t support 32-bits, use --64bits!')
 			defines += ['ANDROID']
-			out, err = conf.cmd_and_log(conf.env.CC + ['-dM', '-E', '-'], output=0, input='\n'.encode(), env=conf.env.env)
+			conf.get_cc_version(conf.env.CXX, clang=True)
+
+		if conf.env.CC_NAME == 'gcc':
+			warnings += ['-fdiagnostics-color=always']
+			defines += ['COMPILER_GCC']
+		elif conf.env.CC_NAME == 'clang':
+			warnings += ['-fcolor-diagnostics']
+			defines += ['COMPILER_CLANG']
 
 		if not conf.env.CC_NAME == 'clang' and not conf.options.CFG == 'asan':
 			linkflags += ['-Wl,--no-undefined']
