@@ -27,7 +27,7 @@ ipch
 
 # waf
 /game/
-/src/build/
+/src_main/build/
 .waf*
 .lock-waf*
 
