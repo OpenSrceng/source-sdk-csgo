@@ -41,6 +41,9 @@ def options(opt):
 def configure(conf):
 	conf.load('compiler_c compiler_cxx')
 
+	if conf.options.NDK:
+		conf.env.DEST_OS = 'linux'
+
 	if conf.options.CCACHE:
 		conf.find_program('ccache', var='CCACHE')
 	if conf.options.STRIP:
