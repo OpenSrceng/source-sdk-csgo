@@ -15,7 +15,8 @@ PROJECTS = [
 	'interfaces',
 	'vstdlib',
 	'mathlib',
-	'mathlib/extended'
+	'mathlib/extended',
+	'launcher_main'
 ]
 
 def options(opt):
