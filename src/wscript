@@ -74,6 +74,7 @@ def configure(conf):
 				conf.env.CC_NAME = conf.env.COMPILER_CC = 'clang'
 				conf.env.COMPILER_CXX = 'clang++'
 				cxxflags += ['-I' + ndk_path + '/sources/cxx-stl/llvm-libc++/include']
+				linkflags += ['-lc++abi','-lc++_static']
 				march += ['-march=armv8-a','-mtune=cortex-a53','-mcpu=cortex-a53']
 			else:
 				conf.fatal('Doesn\'t support 32-bits, use --64bits!')
@@ -87,7 +88,7 @@ def configure(conf):
 			warnings += ['-fcolor-diagnostics']
 			defines += ['COMPILER_CLANG']
 
-		if not conf.env.CC_NAME == 'clang' and not conf.options.CFG == 'asan':
+		if not conf.env.CC_NAME == 'clang' and conf.options.CFG == 'asan':
 			linkflags += ['-Wl,--unresolved-symbols=ignore-all']
 		if conf.env.CC_NAME == 'clang':
 			flags += ['-stdlib=libstdc++']

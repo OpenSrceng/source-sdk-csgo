@@ -14,7 +14,7 @@ def options(opt):
 
 def configure(conf):
 	pass
- 
+
 def build(bld):
 	if bld.options.NDK:
 		pass

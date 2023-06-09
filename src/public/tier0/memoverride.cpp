@@ -358,7 +358,7 @@ inline void __cdecl VPurecallHandler()
 #include <windows.h>
 // set Windows pure virtual handler
 _purecall_handler OldPurecallHandler = _set_purecall_handler( VPurecallHandler );
-#elif defined( POSIX ) && !defined( _PS3 )
+#elif defined( POSIX ) && !defined( _PS3 ) && !defined(ANDROID)
 // set OSX/Linux pure virtual handler
 extern "C" void __cxa_pure_virtual() { VPurecallHandler(); }
 #endif
