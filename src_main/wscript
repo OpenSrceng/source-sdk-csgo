@@ -55,7 +55,7 @@ def configure(conf):
 
 	if conf.env.DEST_OS in 'linux':
 		cflags = ['-fPIC','-pthread']
-		cxxflags = ['-std=c++11']
+		cxxflags = ['-std=c++17']
 		linkflags = ['-Wl,--no-undefined','-pthread','-ldl','-no-canonical-prefixes','-Wl,--no-warn-mismatch']
 		defines += ['GNUC','_DLL_EXT=.so','_LINUX','LINUX','_POSIX','POSIX','GL_GLEXT_PROTOTYPES','DX_TO_GL_ABSTRACTION','USE_SDL']
 		warnings = ['-Wall']
