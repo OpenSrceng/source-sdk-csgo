@@ -17,7 +17,7 @@ def configure(conf):
 
 def build(bld):
 	if bld.options.NDK:
-		pass
+		return
 
 	sources = [
 		File	(['main.cpp']),
