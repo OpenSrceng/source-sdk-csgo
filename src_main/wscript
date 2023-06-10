@@ -54,8 +54,8 @@ def configure(conf):
 	defines = ['CSTRIKE_REL_BUILD=1','RAD_TELEMETRY_DISABLED','CSTRIKE15','VERSION_SAFE_STEAM_API_INTERFACES']
 
 	if conf.env.DEST_OS in 'linux':
-		cflags = ['-fPIC','-std=c11','-pthread']
-		cxxflags = ['-fPIC','-std=c++11','-pthread']
+		cflags = ['-fPIC','-pthread']
+		cxxflags = ['-std=c++11']
 		linkflags = ['-Wl,--no-undefined','-pthread','-ldl','-no-canonical-prefixes','-Wl,--no-warn-mismatch']
 		defines += ['GNUC','_DLL_EXT=.so','_LINUX','LINUX','_POSIX','POSIX','GL_GLEXT_PROTOTYPES','DX_TO_GL_ABSTRACTION','USE_SDL']
 		warnings = ['-Wall']
@@ -82,6 +82,9 @@ def configure(conf):
 				conf.fatal('Doesn\'t support 32-bits, use --64bits!')
 			defines += ['ANDROID']
 			conf.get_cc_version(conf.env.CXX, clang=True)
+
+		if conf.env.DEST_CPU in ['arm','aarch64']:
+			cflags += ['-fsigned-char']
 
 		if conf.env.CC_NAME == 'gcc':
 			warnings += ['-fdiagnostics-color=always']
@@ -119,8 +122,8 @@ def configure(conf):
 		elif conf.env.DEST_CPU in ['x86','x86_64'] and not conf.options.PLATFORM_64BITS:
 			march += ['-m32','-march=prescott','-mtune=core2','-mfpmath=sse']
 
-		conf.env.append_unique('CFLAGS', march + cflags + warnings + flags)
-		conf.env.append_unique('CXXFLAGS', march + cxxflags + warnings + flags)
+		conf.env.append_unique('CFLAGS', march + cflags + warnings)
+		conf.env.append_unique('CXXFLAGS', march + cflags + cxxflags + warnings + flags)
 		conf.env.append_unique('LINKFLAGS', march + linkflags + flags)
 		conf.env.append_unique('DEFINES', defines)
 
