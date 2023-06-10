@@ -1,0 +1,66 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	conf.env.append_unique('DEFINES', ['TOGL_DLL_EXPORT'])
+	if conf.env.DEST_OS != 'darwin':
+		conf.env.append_unique('DEFINES', ['strncpy=use_Q_strncpy_instead','_snprintf=use_Q_snprintf_instead'])
+ 
+def build(bld):
+	if bld.options.NDK:
+		return
+
+	sources = [
+		File	(['dx9asmtogl2.cpp']),
+		File	(['dxabstract.cpp']),
+		File	(['glentrypoints.cpp']),
+		File	(['glmgr.cpp']),
+		File	(['glmgrbasics.cpp']),
+		File	(['glmgrcocoa.mm'], lambda x: x.env.DEST_OS == 'darwin'),
+		File	(['intelglmallocworkaround.cpp'], lambda x: x.env.DEST_OS == 'darwin'),
+		File	(['mach_override.c'], lambda x: x.env.DEST_OS == 'darwin'),
+		File	(['cglmtex.cpp']),
+		File	(['cglmfbo.cpp']),
+		File	(['cglmprogram.cpp']),
+		File	(['cglmbuffer.cpp']),
+		File	(['cglmquery.cpp']),
+		File	(['../public/tier0/memoverride.cpp'])
+	]
+
+	includes = []
+
+	libs = [
+		'tier0',
+		'tier1',
+		'tier2',
+		'interfaces',
+		'vstdlib',
+		'mathlib'
+	]
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.shlib(
+		target   = 'togl',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		install_path = bld.env.BINDIR,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)

@@ -16,7 +16,8 @@ PROJECTS = [
 	'vstdlib',
 	'mathlib',
 	'mathlib/extended',
-	'launcher_main'
+	'launcher_main',
+	'togl'
 ]
 
 def options(opt):

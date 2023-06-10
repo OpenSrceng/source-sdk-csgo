@@ -2449,8 +2449,8 @@ HRESULT	IDirect3DDevice9::Create( IDirect3DDevice9Params *params )
 	InitStates();
 
 	GLScissorEnable_t		defScissorEnable		= { true };
-	GLScissorBox_t			defScissorBox			= { 0,0, m_params.m_presentationParameters.BackBufferWidth,m_params.m_presentationParameters.BackBufferHeight };
-	GLViewportBox_t			defViewportBox			= { 0,0, m_params.m_presentationParameters.BackBufferWidth,m_params.m_presentationParameters.BackBufferHeight, m_params.m_presentationParameters.BackBufferWidth | ( m_params.m_presentationParameters.BackBufferHeight << 16 ) };
+	GLScissorBox_t			defScissorBox			= { 0,0, (GLsizei)m_params.m_presentationParameters.BackBufferWidth,(GLsizei)m_params.m_presentationParameters.BackBufferHeight };
+	GLViewportBox_t			defViewportBox			= { 0,0, (GLsizei)m_params.m_presentationParameters.BackBufferWidth,(GLsizei)m_params.m_presentationParameters.BackBufferHeight, m_params.m_presentationParameters.BackBufferWidth | ( m_params.m_presentationParameters.BackBufferHeight << 16 ) };
 	GLViewportDepthRange_t	defViewportDepthRange	= { 0.1, 1000.0 };
 	GLCullFaceEnable_t		defCullFaceEnable		= { true };
 	GLCullFrontFace_t		defCullFrontFace		= { GL_CCW };
@@ -2676,8 +2676,8 @@ HRESULT IDirect3DDevice9::Reset(D3DPRESENT_PARAMETERS* pPresentationParameters)
 	InitStates();
 
 	GLScissorEnable_t		defScissorEnable		= { true };
-	GLScissorBox_t			defScissorBox			= { 0,0, m_params.m_presentationParameters.BackBufferWidth,m_params.m_presentationParameters.BackBufferHeight };
-	GLViewportBox_t			defViewportBox			= { 0,0, m_params.m_presentationParameters.BackBufferWidth,m_params.m_presentationParameters.BackBufferHeight, m_params.m_presentationParameters.BackBufferWidth | ( m_params.m_presentationParameters.BackBufferHeight << 16 ) };
+	GLScissorBox_t			defScissorBox			= { 0,0, (GLsizei)m_params.m_presentationParameters.BackBufferWidth,(GLsizei)m_params.m_presentationParameters.BackBufferHeight };
+	GLViewportBox_t			defViewportBox			= { 0,0, (GLsizei)m_params.m_presentationParameters.BackBufferWidth,(GLsizei)m_params.m_presentationParameters.BackBufferHeight, m_params.m_presentationParameters.BackBufferWidth | ( m_params.m_presentationParameters.BackBufferHeight << 16 ) };
 	GLViewportDepthRange_t	defViewportDepthRange	= { 0.1, 1000.0 };
 	GLCullFaceEnable_t		defCullFaceEnable		= { true };
 	GLCullFrontFace_t		defCullFrontFace		= { GL_CCW };
