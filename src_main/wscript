@@ -178,7 +178,6 @@ def build(bld):
 	for o in options:
 		if options[o]: store_data['OPTIONS'][o] = options[o]
 	bld.options = optparse.Values(store_data['OPTIONS'])
-	print(bld.options)
 	bld.load_envs()
 	for name in PROJECTS:
 		saveenv = bld.env
