@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # modified from FWGS/xash3d-fwgs
 
-from waflib import Build, Context, Logs
+from waflib import Build, ConfigSet, Context, Logs
 from waflib.Tools import waf_unit_test
-import sys, os
+import sys, os, optparse
 
 default_prefix = '../game'
 
@@ -138,6 +138,12 @@ def configure(conf):
 	conf.check_cc(cflags=cflags, linkflags=linkflags, msg='Checking for required C flags')
 	conf.check_cxx(cxxflags=cxxflags, linkflags=linkflags, msg='Checking for required C++ flags')
 
+	store_path = os.path.join(conf.bldnode.abspath(), 'options.py')
+	store_data = ConfigSet.ConfigSet()
+	options = vars(conf.options)
+	store_data['OPTIONS'] = vars(conf.options)
+	store_data.store(store_path)
+
 	for name in PROJECTS:	
 		depth_push(name)
 		saveenv = conf.env
@@ -165,6 +171,14 @@ inst_copy_fun = Build.inst.copy_fun
 Build.inst.copy_fun = copy_fun
 
 def build(bld):
+	store_path = os.path.join(bld.bldnode.abspath(), 'options.py')
+	store_data = ConfigSet.ConfigSet()
+	options = vars(bld.options)
+	store_data.load(store_path)
+	for o in options:
+		if options[o]: store_data['OPTIONS'][o] = options[o]
+	bld.options = optparse.Values(store_data['OPTIONS'])
+	print(bld.options)
 	bld.load_envs()
 	for name in PROJECTS:
 		saveenv = bld.env
