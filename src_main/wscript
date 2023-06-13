@@ -17,7 +17,9 @@ PROJECTS = [
 	'mathlib',
 	'mathlib/extended',
 	'launcher_main',
-	'togl'
+	'togl',
+	'vphysics',
+	'thirdparty/joltphysics'
 ]
 
 def options(opt):

@@ -1,0 +1,171 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	conf.env.append_unique('DEFINES', ['JPH_DISABLE_CUSTOM_ALLOCATOR', 'JPH_DEBUG_RENDERER'])
+
+def build(bld):
+	sources = [
+		File	(['Jolt/AABBTree/AABBTreeBuilder.cpp']),
+		File	(['Jolt/Core/Color.cpp']),
+		File	(['Jolt/Core/Factory.cpp']),
+		File	(['Jolt/Core/IssueReporting.cpp']),
+		File	(['Jolt/Core/JobSystemThreadPool.cpp']),
+		File	(['Jolt/Core/JobSystemWithBarrier.cpp']),
+		File	(['Jolt/Core/LinearCurve.cpp']),
+		File	(['Jolt/Core/Memory.cpp']),
+		File	(['Jolt/Core/Profiler.cpp']),
+		File	(['Jolt/Core/RTTI.cpp']),
+		File	(['Jolt/Core/Semaphore.cpp']),
+		File	(['Jolt/Core/StringTools.cpp']),
+		File	(['Jolt/Core/TickCounter.cpp']),
+		File	(['Jolt/Geometry/ConvexHullBuilder.cpp']),
+		File	(['Jolt/Geometry/ConvexHullBuilder2D.cpp']),
+		File	(['Jolt/Geometry/Indexify.cpp']),
+		File	(['Jolt/Geometry/OrientedBox.cpp']),
+		File	(['Jolt/Math/UVec4.cpp']),
+		File	(['Jolt/Math/Vec3.cpp']),
+		File	(['Jolt/ObjectStream/ObjectStream.cpp']),
+		File	(['Jolt/ObjectStream/ObjectStreamBinaryIn.cpp']),
+		File	(['Jolt/ObjectStream/ObjectStreamBinaryOut.cpp']),
+		File	(['Jolt/ObjectStream/ObjectStreamIn.cpp']),
+		File	(['Jolt/ObjectStream/ObjectStreamOut.cpp']),
+		File	(['Jolt/ObjectStream/ObjectStreamTextIn.cpp']),
+		File	(['Jolt/ObjectStream/ObjectStreamTextOut.cpp']),
+		File	(['Jolt/ObjectStream/SerializableObject.cpp']),
+		File	(['Jolt/ObjectStream/TypeDeclarations.cpp']),
+		File	(['Jolt/Physics/Body/Body.cpp']),
+		File	(['Jolt/Physics/Body/BodyAccess.cpp']),
+		File	(['Jolt/Physics/Body/BodyCreationSettings.cpp']),
+		File	(['Jolt/Physics/Body/BodyInterface.cpp']),
+		File	(['Jolt/Physics/Body/BodyManager.cpp']),
+		File	(['Jolt/Physics/Body/MassProperties.cpp']),
+		File	(['Jolt/Physics/Body/MotionProperties.cpp']),
+		File	(['Jolt/Physics/Character/Character.cpp']),
+		File	(['Jolt/Physics/Character/CharacterBase.cpp']),
+		File	(['Jolt/Physics/Character/CharacterVirtual.cpp']),
+		File	(['Jolt/Physics/Collision/BroadPhase/BroadPhase.cpp']),
+		File	(['Jolt/Physics/Collision/BroadPhase/BroadPhaseBruteForce.cpp']),
+		File	(['Jolt/Physics/Collision/BroadPhase/BroadPhaseQuadTree.cpp']),
+		File	(['Jolt/Physics/Collision/BroadPhase/QuadTree.cpp']),
+		File	(['Jolt/Physics/Collision/CastConvexVsTriangles.cpp']),
+		File	(['Jolt/Physics/Collision/CastSphereVsTriangles.cpp']),
+		File	(['Jolt/Physics/Collision/CollideConvexVsTriangles.cpp']),
+		File	(['Jolt/Physics/Collision/CollideSphereVsTriangles.cpp']),
+		File	(['Jolt/Physics/Collision/CollisionDispatch.cpp']),
+		File	(['Jolt/Physics/Collision/CollisionGroup.cpp']),
+		File	(['Jolt/Physics/Collision/EstimateCollisionResponse.cpp']),
+		File	(['Jolt/Physics/Collision/GroupFilter.cpp']),
+		File	(['Jolt/Physics/Collision/GroupFilterTable.cpp']),
+		File	(['Jolt/Physics/Collision/ManifoldBetweenTwoFaces.cpp']),
+		File	(['Jolt/Physics/Collision/NarrowPhaseQuery.cpp']),
+		File	(['Jolt/Physics/Collision/NarrowPhaseStats.cpp']),
+		File	(['Jolt/Physics/Collision/PhysicsMaterial.cpp']),
+		File	(['Jolt/Physics/Collision/PhysicsMaterialSimple.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/BoxShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/CapsuleShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/CompoundShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/ConvexHullShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/ConvexShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/CylinderShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/DecoratedShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/HeightFieldShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/MeshShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/MutableCompoundShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/OffsetCenterOfMassShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/RotatedTranslatedShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/ScaledShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/Shape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/SphereShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/StaticCompoundShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/TaperedCapsuleShape.cpp']),
+		File	(['Jolt/Physics/Collision/Shape/TriangleShape.cpp']),
+		File	(['Jolt/Physics/Collision/TransformedShape.cpp']),
+		File	(['Jolt/Physics/Constraints/ConeConstraint.cpp']),
+		File	(['Jolt/Physics/Constraints/Constraint.cpp']),
+		File	(['Jolt/Physics/Constraints/ConstraintManager.cpp']),
+		File	(['Jolt/Physics/Constraints/ContactConstraintManager.cpp']),
+		File	(['Jolt/Physics/Constraints/DistanceConstraint.cpp']),
+		File	(['Jolt/Physics/Constraints/FixedConstraint.cpp']),
+		File	(['Jolt/Physics/Constraints/GearConstraint.cpp']),
+		File	(['Jolt/Physics/Constraints/HingeConstraint.cpp']),
+		File	(['Jolt/Physics/Constraints/MotorSettings.cpp']),
+		File	(['Jolt/Physics/Constraints/PathConstraint.cpp']),
+		File	(['Jolt/Physics/Constraints/PathConstraintPath.cpp']),
+		File	(['Jolt/Physics/Constraints/PathConstraintPathHermite.cpp']),
+		File	(['Jolt/Physics/Constraints/PointConstraint.cpp']),
+		File	(['Jolt/Physics/Constraints/PulleyConstraint.cpp']),
+		File	(['Jolt/Physics/Constraints/RackAndPinionConstraint.cpp']),
+		File	(['Jolt/Physics/Constraints/SixDOFConstraint.cpp']),
+		File	(['Jolt/Physics/Constraints/SliderConstraint.cpp']),
+		File	(['Jolt/Physics/Constraints/SwingTwistConstraint.cpp']),
+		File	(['Jolt/Physics/Constraints/TwoBodyConstraint.cpp']),
+		File	(['Jolt/Physics/DeterminismLog.cpp']),
+		File	(['Jolt/Physics/IslandBuilder.cpp']),
+		File	(['Jolt/Physics/LargeIslandSplitter.cpp']),
+		File	(['Jolt/Physics/PhysicsLock.cpp']),
+		File	(['Jolt/Physics/PhysicsScene.cpp']),
+		File	(['Jolt/Physics/PhysicsSystem.cpp']),
+		File	(['Jolt/Physics/PhysicsUpdateContext.cpp']),
+		File	(['Jolt/Physics/Ragdoll/Ragdoll.cpp']),
+		File	(['Jolt/Physics/StateRecorderImpl.cpp']),
+		File	(['Jolt/Physics/Vehicle/TrackedVehicleController.cpp']),
+		File	(['Jolt/Physics/Vehicle/VehicleAntiRollBar.cpp']),
+		File	(['Jolt/Physics/Vehicle/VehicleCollisionTester.cpp']),
+		File	(['Jolt/Physics/Vehicle/VehicleConstraint.cpp']),
+		File	(['Jolt/Physics/Vehicle/VehicleController.cpp']),
+		File	(['Jolt/Physics/Vehicle/VehicleDifferential.cpp']),
+		File	(['Jolt/Physics/Vehicle/VehicleEngine.cpp']),
+		File	(['Jolt/Physics/Vehicle/VehicleTrack.cpp']),
+		File	(['Jolt/Physics/Vehicle/VehicleTransmission.cpp']),
+		File	(['Jolt/Physics/Vehicle/Wheel.cpp']),
+		File	(['Jolt/Physics/Vehicle/WheeledVehicleController.cpp']),
+		File	(['Jolt/RegisterTypes.cpp']),
+		File	(['Jolt/Renderer/DebugRenderer.cpp']),
+		File	(['Jolt/Renderer/DebugRendererPlayback.cpp']),
+		File	(['Jolt/Renderer/DebugRendererRecorder.cpp']),
+		File	(['Jolt/Skeleton/SkeletalAnimation.cpp']),
+		File	(['Jolt/Skeleton/Skeleton.cpp']),
+		File	(['Jolt/Skeleton/SkeletonMapper.cpp']),
+		File	(['Jolt/Skeleton/SkeletonPose.cpp']),
+		File	(['Jolt/TriangleGrouper/TriangleGrouperClosestCentroid.cpp']),
+		File	(['Jolt/TriangleGrouper/TriangleGrouperMorton.cpp']),
+		File	(['Jolt/TriangleSplitter/TriangleSplitter.cpp']),
+		File	(['Jolt/TriangleSplitter/TriangleSplitterBinning.cpp']),
+		File	(['Jolt/TriangleSplitter/TriangleSplitterFixedLeafSize.cpp']),
+		File	(['Jolt/TriangleSplitter/TriangleSplitterLongestAxis.cpp']),
+		File	(['Jolt/TriangleSplitter/TriangleSplitterMean.cpp']),
+		File	(['Jolt/TriangleSplitter/TriangleSplitterMorton.cpp'])
+	]
+
+	includes = [
+		'.'
+	]
+
+	libs = []
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.stlib(
+		target   = 'jolt',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)
