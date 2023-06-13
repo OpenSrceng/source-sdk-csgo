@@ -16,7 +16,9 @@ PROJECTS = [
 	'vstdlib',
 	'mathlib',
 	'mathlib/extended',
+	'appframework',
 	'launcher_main',
+	'launcher',
 	'togl',
 	'vphysics',
 	'thirdparty/joltphysics'
@@ -123,6 +125,8 @@ def configure(conf):
 			defines += ['PLATFORM_64BITS']
 		elif conf.env.DEST_CPU in ['x86','x86_64'] and not conf.options.PLATFORM_64BITS:
 			march += ['-m32','-march=prescott','-mtune=core2','-mfpmath=sse']
+
+		conf.check_cc(lib='SDL2')
 
 		conf.env.append_unique('CFLAGS', march + cflags + warnings)
 		conf.env.append_unique('CXXFLAGS', march + cflags + cxxflags + warnings + flags)
