@@ -58,7 +58,7 @@
 #include <stddef.h>
 #ifdef LINUX
 #undef offsetof
-#define offsetof(s,m)	(size_t)&(((s *)0)->m)
+#define offsetof( type, var ) __builtin_offsetof( type, var )
 #endif
 
 #ifdef _PS3
