@@ -260,6 +260,7 @@ JPH_SUPPRESS_WARNINGS_STD_END
 #include <limits.h>
 #include <float.h>
 #include <string.h>
+#include <stdint.h>
 #if defined(JPH_USE_SSE)
 	#include <immintrin.h>
 #elif defined(JPH_USE_NEON)
