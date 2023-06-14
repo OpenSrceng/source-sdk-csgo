@@ -1,23 +1,33 @@
 name: Build release
 on: [push, pull_request]
 jobs:
-  build-linux64:
+  build-linux-x86_64:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: build-linux64
+    - uses: actions/checkout@v3
+    - name: build-linux-x86_64
       run : |
           sudo apt update -y && sudo apt upgrade -y && sudo apt install -y libsdl2-dev
           cd src_main
           ./waf configure --cfg=release --strip --silence --64bits
           ./waf install -j2
+    - name: upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+          name: linux-x86_64
+          path: ./game
 
-  build-android64:
+  build-android-arm64:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: build-linux64
+    - uses: actions/checkout@v3
+    - name: build-android-arm64
       run : |
           cd src_main
           ./waf configure --cfg=release --strip --silence --64bits --ndk
           ./waf install -j2
+    - name: upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+          name: android-arm64
+          path: ./game
