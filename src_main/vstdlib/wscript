@@ -37,7 +37,8 @@ def build(bld):
 	libs = [
 		'tier0',
 		'tier1',
-		'interfaces'
+		'interfaces',
+		'SDL2'
 	]
 
 	sources_platform = []

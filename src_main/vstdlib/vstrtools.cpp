@@ -6,7 +6,7 @@
 #include <windows.h>
 #endif
 #if defined(POSIX) && !defined(_PS3)
-#include <iconv.h>
+#include <SDL_stdinc.h>
 #endif
 
 #ifdef _PS3
@@ -52,18 +52,18 @@ int V_UTF8ToUnicode( const char *pUTF8, wchar_t *pwchDest, int cubDestSizeInByte
 	Assert( result == ConversionOK );
 	cchResult *= sizeof( uint16 );
 #elif POSIX
-	iconv_t conv_t = iconv_open( "UTF-32LE", "UTF-8" );
+	SDL_iconv_t conv_t = SDL_iconv_open( "UTF-32LE", "UTF-8" );
 	int cchResult = -1;
 	size_t nLenUnicde = cubDestSizeInBytes;
 	size_t nMaxUTF8 = strlen(pUTF8) + 1;
-	char *pIn = (char *)pUTF8;
+	const char *pIn = (char *)pUTF8;
 	char *pOut = (char *)pwchDest;
-	if ( conv_t > (iconv_t)0 )
+	if ( conv_t > (SDL_iconv_t)0 )
 	{
 		cchResult = 0;
         size_t nInputCharCount = nMaxUTF8;
-		cchResult = iconv( conv_t, &pIn, &nMaxUTF8, &pOut, &nLenUnicde );
-		iconv_close( conv_t );
+		cchResult = SDL_iconv( conv_t, &pIn, &nMaxUTF8, &pOut, &nLenUnicde );
+		SDL_iconv_close( conv_t );
 		if ( (int)cchResult < 0 )
 			cchResult = 0;
 		else
@@ -97,15 +97,15 @@ int V_UnicodeToUTF8( const wchar_t *pUnicode, char *pUTF8, int cubDestSizeInByte
 	int cchResult = 0;
 	if ( pUnicode && pUTF8 )
 	{
-		iconv_t conv_t = iconv_open( "UTF-8", "UTF-32LE" );
+		SDL_iconv_t conv_t = SDL_iconv_open( "UTF-8", "UTF-32LE" );
 		size_t nLenUnicde = ( wcslen(pUnicode) + 1 ) * sizeof(wchar_t); // 4 bytes per wchar vs. 1 byte for utf8 for simple english
 		size_t nMaxUTF8 = cubDestSizeInBytes;
-		char *pIn = (char *)pUnicode;
+		const char *pIn = (char *)pUnicode;
 		char *pOut = (char *)pUTF8;
-		if ( conv_t > (iconv_t)0 )
+		if ( conv_t > (SDL_iconv_t)0 )
 		{
-			cchResult = iconv( conv_t, &pIn, &nLenUnicde, &pOut, &nMaxUTF8 );
-			iconv_close( conv_t );
+			cchResult = SDL_iconv( conv_t, &pIn, &nLenUnicde, &pOut, &nMaxUTF8 );
+			SDL_iconv_close( conv_t );
 			if ( (int)cchResult < 0 )
 				cchResult = 0;
 			else
@@ -137,17 +137,17 @@ int V_UCS2ToUnicode( const ucs2 *pUCS2, wchar_t *pUnicode, int cubDestSizeInByte
 	int cchResult = MIN( (lenUCS2+1)*( int )sizeof(ucs2), cubDestSizeInBytes );
 	V_wcsncpy( (wchar_t*)pUCS2, pUnicode, cchResult );
 #else
-	iconv_t conv_t = iconv_open( "UCS-4LE", "UCS-2LE" );
+	SDL_iconv_t conv_t = SDL_iconv_open( "UCS-4LE", "UCS-2LE" );
 	int cchResult = -1;
 	size_t nLenUnicde = cubDestSizeInBytes;
 	size_t nMaxUTF8 = cubDestSizeInBytes;
-	char *pIn = (char *)pUCS2;
+	const char *pIn = (char *)pUCS2;
 	char *pOut = (char *)pUnicode;
-	if ( conv_t > (iconv_t)0 )
+	if ( conv_t > (SDL_iconv_t)0 )
 	{
 		cchResult = 0;
-		cchResult = iconv( conv_t, &pIn, &nLenUnicde, &pOut, &nMaxUTF8 );
-		iconv_close( conv_t );
+		cchResult = SDL_iconv( conv_t, &pIn, &nLenUnicde, &pOut, &nMaxUTF8 );
+		SDL_iconv_close( conv_t );
 		if ( (int)cchResult < 0 )
 			cchResult = 0;
 		else
@@ -170,17 +170,17 @@ int V_UnicodeToUCS2( const wchar_t *pUnicode, int cubSrcInBytes, char *pUCS2, in
 	int cchResult = MIN( cubSrcInBytes, cubDestSizeInBytes );
 	V_wcsncpy( (wchar_t*)pUCS2, pUnicode, cchResult );
 #elif defined (POSIX)
-	iconv_t conv_t = iconv_open( "UCS-2LE", "UTF-32LE" );
+	SDL_iconv_t conv_t = SDL_iconv_open( "UCS-2LE", "UTF-32LE" );
 	size_t cchResult = -1;
 	size_t nLenUnicde = cubSrcInBytes;
 	size_t nMaxUCS2 = cubDestSizeInBytes;
-	char *pIn = (char*)pUnicode;
+	const char *pIn = (char*)pUnicode;
 	char *pOut = pUCS2;
-	if ( conv_t > (iconv_t)0 )
+	if ( conv_t > (SDL_iconv_t)0 )
 	{
 		cchResult = 0;
-		cchResult = iconv( conv_t, &pIn, &nLenUnicde, &pOut, &nMaxUCS2 );
-		iconv_close( conv_t );
+		cchResult = SDL_iconv( conv_t, &pIn, &nLenUnicde, &pOut, &nMaxUCS2 );
+		SDL_iconv_close( conv_t );
 		if ( (int)cchResult < 0 )
 			cchResult = 0;
 		else
@@ -214,17 +214,17 @@ VSTRTOOLS_INTERFACE int V_UCS2ToUTF8( const ucs2 *pUCS2, char *pUTF8, int cubDes
 	L10nResult result = UCS2stoUTF8s( ( const uint16 *) pUCS2, &cchSrc, ( uint8 * ) pUTF8, &cchResult );
 	Assert( result == ConversionOK );
 #elif defined(POSIX)
-	iconv_t conv_t = iconv_open( "UTF-8", "UCS-2LE" );
+	SDL_iconv_t conv_t = SDL_iconv_open( "UTF-8", "UCS-2LE" );
 	size_t cchResult = -1;
 	size_t nLenUnicde = cubDestSizeInBytes;
 	size_t nMaxUTF8 = cubDestSizeInBytes;
-	char *pIn = (char *)pUCS2;
+	const char *pIn = (char *)pUCS2;
 	char *pOut = (char *)pUTF8;
-	if ( conv_t > (iconv_t)0 )
+	if ( conv_t > (SDL_iconv_t)0 )
 	{
 		cchResult = 0;
-		cchResult = iconv( conv_t, &pIn, &nLenUnicde, &pOut, &nMaxUTF8 );
-		iconv_close( conv_t );
+		cchResult = SDL_iconv( conv_t, &pIn, &nLenUnicde, &pOut, &nMaxUTF8 );
+		SDL_iconv_close( conv_t );
 		if ( (int)cchResult < 0 )
 			cchResult = 0;
 		else
@@ -254,17 +254,17 @@ VSTRTOOLS_INTERFACE int V_UTF8ToUCS2( const char *pUTF8, int cubSrcInBytes, ucs2
 	Assert( result == ConversionOK );
 	cchResult *= sizeof( uint16 );
 #elif defined(POSIX)
-	iconv_t conv_t = iconv_open( "UCS-2LE", "UTF-8" );
+	SDL_iconv_t conv_t = SDL_iconv_open( "UCS-2LE", "UTF-8" );
 	size_t cchResult = -1;
 	size_t nLenUnicde = cubSrcInBytes;
 	size_t nMaxUTF8 = cubDestSizeInBytes;
-	char *pIn = (char *)pUTF8;
+	const char *pIn = (char *)pUTF8;
 	char *pOut = (char *)pUCS2;
-	if ( conv_t > (iconv_t)0 )
+	if ( conv_t > (SDL_iconv_t)0 )
 	{
 		cchResult = 0;
-		cchResult = iconv( conv_t, &pIn, &nLenUnicde, &pOut, &nMaxUTF8 );
-		iconv_close( conv_t );
+		cchResult = SDL_iconv( conv_t, &pIn, &nLenUnicde, &pOut, &nMaxUTF8 );
+		SDL_iconv_close( conv_t );
 		if ( (int)cchResult < 0 )
 			cchResult = 0;
 		else

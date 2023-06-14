@@ -21,7 +21,8 @@ PROJECTS = [
 	'launcher',
 	'togl',
 	'vphysics',
-	'thirdparty/joltphysics'
+	'thirdparty/joltphysics',
+	'thirdparty/SDL2'
 ]
 
 def options(opt):
@@ -73,8 +74,8 @@ def configure(conf):
 				conf.fatal('Set NDK_PATH environment variable pointing to the root of Android NDK!')
 			if conf.options.PLATFORM_64BITS:
 				conf.env.DEST_CPU = 'aarch64'
-				conf.env.CC    = conf.env.LINK_CC  = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android28-clang']
-				conf.env.CXX   = conf.env.LINK_CXX = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android28-clang++']
+				conf.env.CC    = conf.env.LINK_CC  = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang']
+				conf.env.CXX   = conf.env.LINK_CXX = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang++']
 				conf.env.AR    = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar']
 				conf.env.STRIP = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip']
 				conf.env.CC_NAME = conf.env.COMPILER_CC = 'clang'
@@ -86,6 +87,12 @@ def configure(conf):
 				conf.fatal('Doesn\'t support 32-bits, use --64bits!')
 			defines += ['ANDROID']
 			conf.get_cc_version(conf.env.CXX, clang=True)
+			conf.check(lib='android', uselib_store='ANDROID')
+			conf.check(lib='log', uselib_store='LOG')
+			conf.check(lib='GLESv1_CM', uselib_store='GLESV1_CM')
+			conf.check(lib='GLESv2', uselib_store='GLESV2')
+		else:
+			conf.check(lib='SDL2', uselib_store='SDL2')
 
 		if conf.env.DEST_CPU in ['arm','aarch64']:
 			cflags += ['-fsigned-char']
@@ -126,8 +133,6 @@ def configure(conf):
 			defines += ['PLATFORM_64BITS']
 		elif conf.env.DEST_CPU in ['x86','x86_64'] and not conf.options.PLATFORM_64BITS:
 			march += ['-m32','-march=prescott','-mtune=core2','-mfpmath=sse']
-
-		conf.check_cc(lib='SDL2')
 
 		conf.env.append_unique('CFLAGS', march + cflags + warnings)
 		conf.env.append_unique('CXXFLAGS', march + cflags + cxxflags + warnings + flags)
