@@ -97,8 +97,9 @@ def configure(conf):
 			warnings += ['-fcolor-diagnostics']
 			defines += ['COMPILER_CLANG']
 
-		if not conf.env.CC_NAME == 'clang' and conf.options.CFG == 'asan':
+		if conf.env.CC_NAME == 'clang' and conf.options.CFG == 'asan':
 			linkflags += ['-Wl,--unresolved-symbols=ignore-all']
+
 		if conf.env.CC_NAME == 'clang':
 			flags += ['-stdlib=libstdc++']
 
