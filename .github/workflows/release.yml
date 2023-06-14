@@ -1,0 +1,23 @@
+name: Build release
+on: [push, pull_request]
+jobs:
+  build-linux64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: build-linux64
+      run : |
+          sudo apt update -y && sudo apt upgrade -y && sudo apt install -y libsdl2-dev
+          cd src_main
+          ./waf configure --cfg=release --strip --silence --64bits
+          ./waf install -j2
+
+  build-android64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: build-linux64
+      run : |
+          cd src_main
+          ./waf configure --cfg=release --strip --silence --64bits --ndk
+          ./waf install -j2

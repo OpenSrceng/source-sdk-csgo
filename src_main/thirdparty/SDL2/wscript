@@ -24,8 +24,7 @@ def build(bld):
 		File	(bld.path.ant_glob(['src/audio/*.c'])),
 		File	(bld.path.ant_glob(['src/audio/android/*.c']), lambda x: x.options.NDK),
 		File	(bld.path.ant_glob(['src/audio/dummy/*.c'])),
-		File	(['src/atomic/SDL_atomic.c']),
-		File	(['src/atomic/SDL_spinlock.c']),
+		File	(bld.path.ant_glob(['src/atomic/*.c'])),
 		File	(bld.path.ant_glob(['src/core/android/*.c']), lambda x: x.options.NDK),
 		File	(bld.path.ant_glob(['src/cpuinfo/*.c'])),
 		File	(bld.path.ant_glob(['src/dynapi/*.c'])),
@@ -35,7 +34,7 @@ def build(bld):
 		File	(bld.path.ant_glob(['src/haptic/android/*.c']), lambda x: x.options.NDK),
 		File	(bld.path.ant_glob(['src/joystick/*.c']), lambda x: x.options.NDK),
 		File	(bld.path.ant_glob(['src/joystick/android/*.c']), lambda x: x.options.NDK),
-		File	(['src/joystick/steam/SDL_steamcontroller.c']),
+		File	(bld.path.ant_glob(['src/joystick/steam/*.c'])),
 		File	(bld.path.ant_glob(['src/loadso/dlopen/*.c']), lambda x: x.env.DEST_OS != 'win32'),
 		File	(bld.path.ant_glob(['src/power/*.c'])),
 		File	(bld.path.ant_glob(['src/power/android/*.c']), lambda x: x.options.NDK),
@@ -49,8 +48,7 @@ def build(bld):
 		File	(bld.path.ant_glob(['src/timer/unix/*.c']), lambda x: x.env.DEST_OS != 'win32'),
 		File	(bld.path.ant_glob(['src/video/*.c'])),
 		File	(bld.path.ant_glob(['src/video/android/*.c']), lambda x: x.options.NDK),
-		File	(bld.path.ant_glob(['src/video/yuv2rgb/*.c'])),
-		File	(bld.path.ant_glob(['src/test/*.c']))
+		File	(bld.path.ant_glob(['src/video/yuv2rgb/*.c']))
 	]
 
 	includes = []

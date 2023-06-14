@@ -17,6 +17,7 @@ PROJECTS = [
 	'mathlib',
 	'mathlib/extended',
 	'appframework',
+	'bitmap',
 	'launcher_main',
 	'launcher',
 	'togl',
@@ -32,6 +33,9 @@ def options(opt):
 
 	grp.add_option('--64bits', action = 'store_true', dest = 'PLATFORM_64BITS', default = False,
 		help = 'build for 64bits platform [default: %default]')
+
+	grp.add_option('--silence', action = 'store_true', dest = 'SILENCE', default = False,
+		help = 'build in silence [default: %default]')
 
 	grp.add_option('--cfg', action = 'store', dest = 'CFG', default = 'release',
 		help = 'build types [default: %default]')
@@ -63,15 +67,18 @@ def configure(conf):
 		cxxflags = ['-std=c++17']
 		linkflags = ['-Wl,--no-undefined','-pthread','-ldl','-no-canonical-prefixes','-Wl,--no-warn-mismatch']
 		defines += ['GNUC','_DLL_EXT=.so','_LINUX','LINUX','_POSIX','POSIX','GL_GLEXT_PROTOTYPES','DX_TO_GL_ABSTRACTION','USE_SDL']
-		warnings = ['-Wall']
+		if not conf.options.SILENCE:
+			warnings = ['-Wall']
+		else:
+			warnings = ['-w']
 		flags = []
 		march = []
 
 		if conf.options.NDK:
-			if 'NDK_PATH' in os.environ:
-				ndk_path = os.environ.get('NDK_PATH')
+			if 'ANDROID_NDK' in os.environ:
+				ndk_path = os.environ.get('ANDROID_NDK')
 			else:
-				conf.fatal('Set NDK_PATH environment variable pointing to the root of Android NDK!')
+				conf.fatal('Set ANDROID_NDK environment variable pointing to the root of Android NDK!')
 			if conf.options.PLATFORM_64BITS:
 				conf.env.DEST_CPU = 'aarch64'
 				conf.env.CC    = conf.env.LINK_CC  = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang']
