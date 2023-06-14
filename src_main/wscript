@@ -139,7 +139,7 @@ def configure(conf):
 		os.path.abspath('public'),
 		os.path.abspath('public/tier0'),
 		os.path.abspath('public/tier1'),
-		os.path.abspath('thirdparty/SDL2')
+		os.path.abspath('thirdparty/SDL2/include')
 	]
 	conf.env.append_unique('INCLUDES', includes)
 
