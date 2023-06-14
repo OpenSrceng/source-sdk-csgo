@@ -81,7 +81,7 @@ def configure(conf):
 				conf.env.CC_NAME = conf.env.COMPILER_CC = 'clang'
 				conf.env.COMPILER_CXX = 'clang++'
 				cxxflags += ['-I' + ndk_path + '/sources/cxx-stl/llvm-libc++/include']
-				linkflags += ['-lc++abi','-lc++_static']
+				linkflags += ['-lc++abi','-lc++_static','-fuse-ld=lld']
 				march += ['-march=armv8-a','-mtune=cortex-a53','-mcpu=cortex-a53']
 			else:
 				conf.fatal('Doesn\'t support 32-bits, use --64bits!')
@@ -179,7 +179,6 @@ def depth_pop():
 	global DEPTH
 	DEPTH = os.path.dirname(DEPTH)
 
-# modified from waf/playground/strip/strip_on_install.py
 def copy_fun(self, src, tgt):
 	inst_copy_fun(self, src, tgt)
 	if self.generator.bld.options.STRIP and getattr(self.generator, 'link_task', None) and self.generator.link_task.outputs[0] in self.inputs:
