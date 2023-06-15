@@ -33,8 +33,7 @@ def build(bld):
 		'interfaces',
 		'vstdlib',
 		'appframework',
-		'togl',
-		'SDL2'
+		'togl'
 	]
 
 	sources_platform = []
