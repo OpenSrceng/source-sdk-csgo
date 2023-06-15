@@ -17,7 +17,6 @@ def configure(conf):
  
 def build(bld):
 	sources = [
-		File	(['cbase.cpp']),
 		File	(['../public/collisionutils.cpp']),
 		File	(['../public/filesystem_helpers.cpp']),
 		File	(['vjolt_collide.cpp']),

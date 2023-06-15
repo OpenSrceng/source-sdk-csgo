@@ -33,8 +33,6 @@
 #include "compat/compat_sdk2013.h"
 #elif defined( GAME_ASW )
 #include "compat/compat_asw.h"
-#elif defined( GAME_PORTAL2 )
-#include "compat/compat_portal2.h"
 #endif
 
 // STD
