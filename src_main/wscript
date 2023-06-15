@@ -84,8 +84,8 @@ def configure(conf):
 				conf.fatal('Set ANDROID_NDK environment variable pointing to the root of Android NDK!')
 			if conf.options.PLATFORM_64BITS:
 				conf.env.DEST_CPU = 'aarch64'
-				conf.env.CC    = conf.env.LINK_CC  = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang']
-				conf.env.CXX   = conf.env.LINK_CXX = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang++']
+				conf.env.CC    = conf.env.LINK_CC  = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang']
+				conf.env.CXX   = conf.env.LINK_CXX = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang++']
 				conf.env.AR    = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar']
 				conf.env.STRIP = [ndk_path + '/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip']
 				conf.env.CC_NAME = conf.env.COMPILER_CC = 'clang'
