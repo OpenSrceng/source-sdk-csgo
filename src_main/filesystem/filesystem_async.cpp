@@ -19,7 +19,6 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
-#include "tier0/vcrmode.h"
 #include "tier1/convar.h"
 #include "vstdlib/jobthread.h"
 #include "tier1/utlmap.h"
@@ -164,7 +163,7 @@ public:
 
 		AUTO_LOCK( m_mutex );
 
-		int iEntry = (CUtlMap<CUtlString, AsyncOpenedFile_t>::IndexType_t)(int)item;
+		int iEntry = (CUtlMap<CUtlString, AsyncOpenedFile_t>::IndexType_t)(intp)item;
 		Assert( m_map.IsValidIndex( iEntry ) );
 		m_map[iEntry]->AddRef();
 		return m_map[iEntry];
@@ -179,7 +178,7 @@ public:
 
 		AUTO_LOCK( m_mutex );
 
-		int iEntry = (CUtlMap<CUtlString, AsyncOpenedFile_t>::IndexType_t)(int)item;
+		int iEntry = (CUtlMap<CUtlString, AsyncOpenedFile_t>::IndexType_t)(intp)item;
 		Assert( m_map.IsValidIndex( iEntry ) );
 		m_map[iEntry]->AddRef();
 	}
@@ -193,7 +192,7 @@ public:
 
 		AUTO_LOCK( m_mutex );
 
-		int iEntry = (CUtlMap<CUtlString, AsyncOpenedFile_t>::IndexType_t)(int)item;
+		int iEntry = (CUtlMap<CUtlString, AsyncOpenedFile_t>::IndexType_t)(intp)item;
 		Assert( m_map.IsValidIndex( iEntry ) );
 		if ( m_map[iEntry]->Release() == 0 )
 		{
@@ -660,35 +659,31 @@ void CBaseFileSystem::InitAsync()
 		return;
 	}
 
-	if ( VCRGetMode() == VCR_Disabled )
+	// create the i/o thread pool
+	m_pThreadPool = CreateNewThreadPool();
+
+	ThreadPoolStartParams_t params;
+	params.iThreadPriority = 0;
+	params.bIOThreads = true;
+	params.nThreadsMax = 4; // Limit count of IO threads to a maximum of 4.
+	if ( IsX360() )
 	{
-		// create the i/o thread pool
-		m_pThreadPool = CreateNewThreadPool();
+		// override defaults
+		// 360 has a single i/o thread on the farthest proc
+		params.nThreads = 1;
+		params.fDistribute = TRS_TRUE;
+		params.bUseAffinityTable = true;
+		params.iAffinityTable[0] = XBOX_PROCESSOR_3;
+	}
+	else
+	{
+			params.nThreads = MIN( params.nThreads, 4 ); // > 4 threads doing IO on one drive, are you crazy?
+			params.nStackSize = 256*1024;
+	}
 
-		ThreadPoolStartParams_t params;
-		params.iThreadPriority = 0;
-		params.bIOThreads = true;
-		params.nThreadsMax = 4; // Limit count of IO threads to a maximum of 4.
-		if ( IsX360() )
-		{
-			// override defaults
-			// 360 has a single i/o thread on the farthest proc
-			params.nThreads = 1;
-			params.fDistribute = TRS_TRUE;
-			params.bUseAffinityTable = true;
-			params.iAffinityTable[0] = XBOX_PROCESSOR_3;
-		}
-		else if( IsPC() )
-		{
-			// override defaults
-			// maximum # of async I/O thread on PC is 2
-			params.nThreads = 1;
-		}
-
-		if ( !m_pThreadPool->Start( params, "IOJob" ) )
-		{
-			SafeRelease( m_pThreadPool );
-		}
+	if ( !m_pThreadPool->Start( params, "IOJob" ) )
+	{
+		SafeRelease( m_pThreadPool );
 	}
 }
 
@@ -1380,7 +1375,7 @@ FSAsyncStatus_t CBaseFileSystem::SyncRead( const FileAsyncRequest_t &request )
 		}
 
 		result = ( ( nBytesRead == 0 ) && ( nBytesToRead != 0 ) ) ? FSASYNC_ERR_READING : FSASYNC_OK;
-		DoAsyncCallback( request, pDest, min( nBytesRead, nBytesToRead ), result );
+		DoAsyncCallback( request, pDest, MIN( nBytesRead, nBytesToRead ), result );
 	}
 	else
 	{

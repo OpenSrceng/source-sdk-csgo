@@ -1049,7 +1049,7 @@ size_t CStdioFile::FS_fwrite( const void *src, size_t size )
 
 		while ( remaining > 0 )
 		{
-			size_t bytesToCopy = min(remaining, (size_t)WRITE_CHUNK);
+			size_t bytesToCopy = MIN(remaining, (size_t)WRITE_CHUNK);
 
 			total += fwrite(current, 1, bytesToCopy, m_pFile);
 

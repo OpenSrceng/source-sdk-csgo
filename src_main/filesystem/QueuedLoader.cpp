@@ -41,10 +41,10 @@
 #include "tier0/tslist.h"
 #include "tier1/utlbuffer.h"
 #include "tier1/convar.h"
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include "tier1/utllinkedlist.h"
 #include "tier1/utlstring.h"
-#include "tier1/UtlSortVector.h"
+#include "tier1/utlsortvector.h"
 #include "tier1/utldict.h"
 #include "basefilesystem.h"
 #include "tier0/icommandline.h"
@@ -644,7 +644,7 @@ FileNameHandle_t CQueuedLoader::FindFilename( const char *pFilename )
 //-----------------------------------------------------------------------------
 bool CQueuedLoader::CResourceNameLessFunc::Less( const FileNameHandle_t &hFilenameLHS, const FileNameHandle_t &hFilenameRHS, void *pCtx )
 {
-	switch ( (int)pCtx )
+	switch ( (intp)pCtx )
 	{
 	case RESOURCEPRELOAD_MATERIAL:
 		{
