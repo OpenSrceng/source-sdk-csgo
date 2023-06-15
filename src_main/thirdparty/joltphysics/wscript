@@ -13,7 +13,7 @@ def options(opt):
 	pass
 
 def configure(conf):
-	conf.env.append_unique('DEFINES', ['JPH_DISABLE_CUSTOM_ALLOCATOR', 'JPH_DEBUG_RENDERER'])
+	conf.env.append_unique('DEFINES', ['JPH_DISABLE_CUSTOM_ALLOCATOR','JPH_DEBUG_RENDERER'])
 
 def build(bld):
 	sources = [
