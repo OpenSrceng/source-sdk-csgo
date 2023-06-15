@@ -422,11 +422,7 @@ inline vec_t BitsToFloat( unsigned long i )
 
 inline bool IsFinite( const vec_t &f )
 {
-#ifdef _GAMECONSOLE
 	return f == f && fabs(f) <= FLT_MAX;
-#else
-	return ((FloatBits(f) & 0x7F800000) != 0x7F800000);
-#endif
 }
 
 #if defined( WIN32 )

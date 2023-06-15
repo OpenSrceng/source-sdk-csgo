@@ -392,7 +392,9 @@ extern "C" void __cxa_pure_virtual() { VPurecallHandler(); }
 #define inline
 #endif
 
+#if defined(USE_LIGHT_MEM_DEBUG) || defined(USE_MEM_DEBUG)
 const char *g_pszModule = MKSTRING( MEMOVERRIDE_MODULE );
+#endif
 inline void *AllocUnattributed( size_t nSize )
 {
 #if !defined(USE_LIGHT_MEM_DEBUG) && !defined(USE_MEM_DEBUG)
