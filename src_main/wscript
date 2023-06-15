@@ -2,7 +2,6 @@
 # modified from FWGS/xash3d-fwgs
 
 from waflib import Build, ConfigSet, Context, Logs
-from waflib.Tools import waf_unit_test
 import sys, os, optparse
 
 default_prefix = '../game'
@@ -18,6 +17,7 @@ PROJECTS = [
 	'mathlib/extended',
 	'appframework',
 	'bitmap',
+	'bonesetup',
 	'launcher_main',
 	'launcher',
 	'togl',
@@ -27,11 +27,11 @@ PROJECTS = [
 ]
 
 def options(opt):
-	opt.load('compiler_c compiler_cxx waf_unit_test')
+	opt.load('compiler_c compiler_cxx')
 
 	grp = opt.add_option_group('Common options')
 
-	grp.add_option('--64bits', action = 'store_true', dest = 'PLATFORM_64BITS', default = False,
+	grp.add_option('--64bits', action = 'store_true', dest = 'PLATFORM_64BITS', default = True,
 		help = 'build for 64bits platform [default: %default]')
 
 	grp.add_option('--silence', action = 'store_true', dest = 'SILENCE', default = False,
@@ -89,7 +89,6 @@ def configure(conf):
 				conf.env.COMPILER_CXX = 'clang++'
 				cxxflags += ['-I' + ndk_path + '/sources/cxx-stl/llvm-libc++/include']
 				linkflags += ['-lc++abi','-lc++_static','-fuse-ld=lld']
-				march += ['-march=armv8-a','-mtune=cortex-a53','-mcpu=cortex-a53']
 			else:
 				conf.fatal('Doesn\'t support 32-bits, use --64bits!')
 			defines += ['ANDROID']
@@ -135,11 +134,18 @@ def configure(conf):
 			defines += ['NDEBUG=1']
 
 		if conf.options.PLATFORM_64BITS:
+			march += ['-m64']
 			if conf.env.DEST_CPU == 'x86_64':
 				march += ['-march=nocona','-mtune=core2','-mfpmath=sse']
+			elif conf.env.DEST_CPU in ['arm','aarch64']:
+				march += ['-march=armv8-a','-mtune=cortex-a53','-mcpu=cortex-a53']
 			defines += ['PLATFORM_64BITS']
 		elif conf.env.DEST_CPU in ['x86','x86_64'] and not conf.options.PLATFORM_64BITS:
-			march += ['-m32','-march=prescott','-mtune=core2','-mfpmath=sse']
+			march += ['-m32']
+			if conf.env.DEST_CPU == 'x86_64':
+				march += ['-march=prescott','-mtune=core2','-mfpmath=sse']
+			elif conf.env.DEST_CPU == 'arm':
+				march += ['-march=armv7-a','-mtune=cortex-a15','-mcpu=cortex-a15','-mfpu=neon','-mfloat-abi=hard','-mthumb','-mvectorize-with-neon-quad']
 
 		conf.env.append_unique('CFLAGS', march + cflags + warnings)
 		conf.env.append_unique('CXXFLAGS', march + cflags + cxxflags + warnings + flags)
