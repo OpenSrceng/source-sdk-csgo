@@ -38,7 +38,7 @@ def build(bld):
 		sources_platform += i.name
 
 	bld.shlib(
-		target   = 'vaudio_miles',
+		target   = 'vaudio_minimp3',
 		features = 'c cxx',
 		source   = sources_platform,
 		includes = includes,

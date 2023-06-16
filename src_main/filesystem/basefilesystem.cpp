@@ -5043,7 +5043,7 @@ CSysModule *CBaseFileSystem::LoadModule( const char *pFileName, const char *pPat
 		if ( FilterByPathID( &m_SearchPaths[i], lookup ) )
 			continue;
 
-		Q_snprintf( tempPathID, sizeof(tempPathID), "%s%s", m_SearchPaths[i].GetPathString(), pFileName ); // append the path to this dir.
+		Q_snprintf( tempPathID, sizeof(tempPathID), "%slib%s", m_SearchPaths[i].GetPathString(), pFileName ); // append the path to this dir.
 		CSysModule *pModule = Sys_LoadModule( tempPathID );
 		if ( pModule ) 
 		{
