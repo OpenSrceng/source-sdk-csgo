@@ -16,6 +16,9 @@ def configure(conf):
 	conf.env.append_unique('DEFINES', ['LAUNCHERONLY'])
  
 def build(bld):
+	if bld.options.DEDICATED:
+		return
+
 	sources = [
 		File	(['../public/filesystem_init.cpp']),
 		File	(['launcher.cpp']),
