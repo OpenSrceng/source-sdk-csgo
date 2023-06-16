@@ -20,7 +20,7 @@
 
 #ifdef LINUX
 #undef offsetof
-#define offsetof(s,m)	(size_t)&(((s *)0)->m)
+#define offsetof( type, var ) __builtin_offsetof( type, var )
 #endif
 
 // Max number of properties in a datatable and its children.

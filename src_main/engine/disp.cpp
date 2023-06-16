@@ -163,9 +163,9 @@ void CDispInfo::UpdateNodeBoundingBoxes_R( CVertIndex const &nodeIndex, int iNod
 
 		unsigned short tempIndices[3] = 
 		{
-			m_MeshReader.Index( iIndexStart+0 ) - m_iVertOffset,
-			m_MeshReader.Index( iIndexStart+1 ) - m_iVertOffset,
-			m_MeshReader.Index( iIndexStart+2 ) - m_iVertOffset
+			(unsigned short)(m_MeshReader.Index( iIndexStart+0 ) - m_iVertOffset),
+			(unsigned short)(m_MeshReader.Index( iIndexStart+1 ) - m_iVertOffset),
+			(unsigned short)(m_MeshReader.Index( iIndexStart+2 ) - m_iVertOffset)
 		};
 
 		for ( int j = 0; j < 3; j++ )
@@ -204,9 +204,9 @@ void CDispInfo::TestAddDecalTri( int iIndexStart, unsigned short decalHandle, CD
 	// If the decal is too far away from the plane of this triangle, reject it.
 	unsigned short tempIndices[3] = 
 	{
-		m_MeshReader.Index( iIndexStart+0 ) - m_iVertOffset,
-		m_MeshReader.Index( iIndexStart+1 ) - m_iVertOffset,
-		m_MeshReader.Index( iIndexStart+2 ) - m_iVertOffset
+		(unsigned short)(m_MeshReader.Index( iIndexStart+0 ) - m_iVertOffset),
+		(unsigned short)(m_MeshReader.Index( iIndexStart+1 ) - m_iVertOffset),
+		(unsigned short)(m_MeshReader.Index( iIndexStart+2 ) - m_iVertOffset)
 	};
 	
 	const Vector &v0 = m_MeshReader.Position( tempIndices[0] );
@@ -298,9 +298,9 @@ void CDispInfo::TestAddDecalTri( int iIndexStart, unsigned short decalHandle, CD
 {
 	unsigned short tempIndices[3] = 
 	{
-		m_MeshReader.Index( iIndexStart+0 ) - m_iVertOffset,
-		m_MeshReader.Index( iIndexStart+1 ) - m_iVertOffset,
-		m_MeshReader.Index( iIndexStart+2 ) - m_iVertOffset
+		(unsigned short)(m_MeshReader.Index( iIndexStart+0 ) - m_iVertOffset),
+		(unsigned short)(m_MeshReader.Index( iIndexStart+1 ) - m_iVertOffset),
+		(unsigned short)(m_MeshReader.Index( iIndexStart+2 ) - m_iVertOffset)
 	};
 #ifndef DEDICATED
 	// Setup verts.

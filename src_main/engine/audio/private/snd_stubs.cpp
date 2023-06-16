@@ -714,7 +714,7 @@ void CEngineVoiceSteam::PlayIncomingVoiceData( XUID xuid, const byte *pbData, un
 			{
 				if ( !m_arrRemoteVoice.Count() )
 				{
-					RemoteTalker_t rt = { 0, m_bVoiceForPs3 ? ENGINE_VOICE_FLAG_PS3 : 0, 0 };
+					RemoteTalker_t rt = { 0, (uint64)(m_bVoiceForPs3 ? ENGINE_VOICE_FLAG_PS3 : 0), 0 };
 					m_arrRemoteVoice.AddToTail( rt );
 				}
 				goto playvoice;

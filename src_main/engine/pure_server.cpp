@@ -12,12 +12,12 @@
 #include "userid.h"
 #include "pure_server.h"
 #include "common.h"
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include "convar.h"
 #include "filesystem_engine.h"
 #include "server.h"
 #include "sv_filter.h"
-#include "tier1/UtlSortVector.h"
+#include "tier1/utlsortvector.h"
 
 // NOTE: This has to be the last file included!
 #include "tier0/memdbgon.h"

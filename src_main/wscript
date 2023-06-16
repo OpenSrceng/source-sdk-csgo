@@ -23,6 +23,7 @@ PROJECTS = [
 	'launcher',
 	'filesystem',
 	'togl',
+	'engine',
 	'vphysics',
 	'engine/voice_codecs/minimp3',
 	'thirdparty/joltphysics',
@@ -33,6 +34,9 @@ def options(opt):
 	opt.load('compiler_c compiler_cxx')
 
 	grp = opt.add_option_group('Common options')
+
+	grp.add_option('--dedicated', action = 'store_true', dest = 'DEDICATED', default = False,
+		help = 'build dedicated server(WIP) [default: %default]')
 
 	grp.add_option('--64bits', action = 'store_true', dest = 'PLATFORM_64BITS', default = True,
 		help = 'build for 64bits platform [default: %default]')
@@ -149,6 +153,11 @@ def configure(conf):
 				march += ['-march=prescott','-mtune=core2','-mfpmath=sse']
 			elif conf.env.DEST_CPU == 'arm':
 				march += ['-march=armv7-a','-mtune=cortex-a15','-mcpu=cortex-a15','-mfpu=neon','-mfloat-abi=hard','-mthumb','-mvectorize-with-neon-quad']
+
+		if conf.options.DEDICATED:
+			defines += [
+				'DEDICATED'
+			]
 
 		conf.env.append_unique('CFLAGS', march + cflags + warnings)
 		conf.env.append_unique('CXXFLAGS', march + cflags + cxxflags + warnings + flags)

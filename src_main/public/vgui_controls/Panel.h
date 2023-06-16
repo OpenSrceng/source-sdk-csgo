@@ -13,7 +13,7 @@
 #endif
 
 #include "tier1/utlflags.h"
-#include "vgui/VGUI.h"
+#include "vgui/vgui.h"
 #include "vgui/Dar.h"
 #include "vgui_controls/MessageMap.h"
 #if defined( VGUI_USEKEYBINDINGMAPS )
@@ -24,8 +24,8 @@
 #include "vgui_controls/Controls.h"
 #include "vgui_controls/PHandle.h"
 #include "vgui_controls/PanelAnimationVar.h"
-#include "Color.h"
-#include "vstdlib/IKeyValuesSystem.h"
+#include "color.h"
+#include "vstdlib/ikeyvaluessystem.h"
 #include "tier1/utlsymbol.h"
 #include "vgui_controls/BuildGroup.h"
 

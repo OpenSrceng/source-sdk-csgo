@@ -2855,8 +2855,8 @@ uint64 COcclusionInfo::s_nAssocArrayMisses = 0;
 //uint64 s_nOccluded = 0, s_nUnoccluded = 0;
 
 
-const int32 ALIGN16 g_SIMD_0101_signmask[ 4 ] ALIGN16_POST = { 0, 0x80000000, 0, 0x80000000 };
-const int32 ALIGN16 g_SIMD_0011_signmask[ 4 ] ALIGN16_POST = { 0, 0, 0x80000000, 0x80000000 };
+const uint32 ALIGN16 g_SIMD_0101_signmask[ 4 ] ALIGN16_POST = { 0, 0x80000000, 0, 0x80000000 };
+const uint32 ALIGN16 g_SIMD_0011_signmask[ 4 ] ALIGN16_POST = { 0, 0, 0x80000000, 0x80000000 };
 
 struct OcclusionTestRec_t
 {

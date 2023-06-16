@@ -18,6 +18,9 @@ def configure(conf):
 		conf.env.append_unique('DEFINES', ['strncpy=use_Q_strncpy_instead','_snprintf=use_Q_snprintf_instead'])
  
 def build(bld):
+	if bld.options.DEDICATED:
+		return
+
 	sources = [
 		File	(['dx9asmtogl2.cpp']),
 		File	(['dxabstract.cpp']),

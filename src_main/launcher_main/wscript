@@ -16,7 +16,7 @@ def configure(conf):
 	pass
 
 def build(bld):
-	if bld.options.NDK:
+	if bld.options.DEDICATED or bld.options.NDK:
 		return
 
 	sources = [

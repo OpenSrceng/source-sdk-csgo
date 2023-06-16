@@ -10,8 +10,6 @@
 #undef fopen
 #endif
 
-#include "tier1/tokenset.h"
-
 #include <algorithm>
 #include <stdarg.h>
 #include "dt_send.h"

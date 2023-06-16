@@ -12,8 +12,8 @@
 #pragma once
 #endif
 
-#include <vgui/VGUI.h>
-#include <Color.h>
+#include <vgui/vgui.h>
+#include <color.h>
 #include <vgui/IImage.h>
 
 namespace vgui
