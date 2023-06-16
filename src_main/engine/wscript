@@ -358,7 +358,34 @@ def build(bld):
 		'../thirdparty/protobuf-2.5.0/src'
 	]
 
-	libs = []
+	libs = [
+		'tier0',
+		'tier1',
+		'tier2',
+		'tier3',
+		'interfaces',
+		'vstdlib',
+		'appframework',
+		'bitmap',
+		'dmxloader',
+		'mathlib',
+		'matsys_controls',
+		'soundsystem_lowlevel',
+		'vtf',
+		'bzip2',
+		'protobuf',
+		'curl',
+		'openal-soft'
+	]
+
+	if not bld.options.DEDICATED:
+		libs += [
+			'vgui_controls'
+		]
+		if bld.env.DEST_OS == 'linux':
+			libs += [
+				'videocfg'
+			]
 
 	sources_platform = []
 	for i in sources:
