@@ -362,6 +362,12 @@
 	#error
 #endif
 
+#ifdef ANDROID
+	#define IsPlatformAndroid() 1
+#else
+	#define IsPlatformAndroid() 0
+#endif
+
 // IsXXXX platform pseudo-functions
 #if ( defined( PLATFORM_WINDOWS ) && ( PLATFORM_WINDOWS ) )
 #define IsPlatformWindows() 1
@@ -401,7 +407,8 @@
 //-----------------------------------------------------------------------------
 #if CROSS_PLATFORM_VERSION < 2
 
-#define IsLinux()	IsPlatformLinux() 
+#define IsLinux()	IsPlatformLinux()
+#define IsAndroid()	IsPlatformAndroid()
 #define IsOSX()		IsPlatformOSX()
 #define IsPosix()	IsPlatformPosix()
 #define IsX360()	IsPlatformX360()
