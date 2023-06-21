@@ -73,13 +73,13 @@ def configure(conf):
 		cflags = ['-fPIC','-pthread']
 		cxxflags = ['-std=c++17']
 		linkflags = ['-Wl,--no-undefined','-pthread','-ldl','-no-canonical-prefixes','-Wl,--no-warn-mismatch']
+		flags = ['-fvisibility=hidden']
+		march = []
 		defines += ['GNUC','_DLL_EXT=.so','_LINUX','LINUX','_POSIX','POSIX','GL_GLEXT_PROTOTYPES','DX_TO_GL_ABSTRACTION','USE_SDL']
 		if not conf.options.SILENCE:
 			warnings = ['-Wall']
 		else:
 			warnings = ['-w']
-		flags = []
-		march = []
 
 		if conf.options.NDK:
 			if 'ANDROID_NDK' in os.environ:
@@ -121,7 +121,7 @@ def configure(conf):
 			linkflags += ['-Wl,--unresolved-symbols=ignore-all']
 
 		if conf.env.CC_NAME == 'clang':
-			flags += ['-stdlib=libstdc++']
+			cxxflags += ['-stdlib=libstdc++']
 
 		if conf.options.CFG == 'debug':
 			cflags += ['-O0','-g3']
@@ -159,7 +159,7 @@ def configure(conf):
 				'DEDICATED'
 			]
 
-		conf.env.append_unique('CFLAGS', march + cflags + warnings)
+		conf.env.append_unique('CFLAGS', march + cflags + warnings + flags)
 		conf.env.append_unique('CXXFLAGS', march + cflags + cxxflags + warnings + flags)
 		conf.env.append_unique('LINKFLAGS', march + linkflags + flags)
 		conf.env.append_unique('DEFINES', defines)
