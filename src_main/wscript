@@ -27,7 +27,8 @@ PROJECTS = [
 	'vphysics',
 	'engine/voice_codecs/minimp3',
 	'thirdparty/joltphysics',
-	'thirdparty/SDL2'
+	'thirdparty/SDL2',
+	'thirdparty/protobuf-2.5.0'
 ]
 
 def options(opt):
