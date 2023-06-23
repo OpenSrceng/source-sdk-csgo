@@ -1,0 +1,139 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	conf.env.append_unique('DEFINES', ['AL_LIBTYPE_STATIC'])
+
+def build(bld):
+	if bld.env.DEST_OS == 'win32':
+		return
+
+	sources = [
+		File	(['common/alcomplex.cpp']),
+		File	(['common/alfstream.cpp']),
+		File	(['common/almalloc.cpp']),
+		File	(['common/alsem.cpp']),
+		File	(['common/alstring.cpp']),
+		File	(['common/althrd_setname.cpp']),
+		File	(['common/dynload.cpp']),
+		File	(['common/polyphase_resampler.cpp']),
+		File	(['common/ringbuffer.cpp']),
+		File	(['common/strutils.cpp']),
+		File	(['core/ambdec.cpp']),
+		File	(['core/ambidefs.cpp']),
+		File	(['core/bformatdec.cpp']),
+		File	(['core/bs2b.cpp']),
+		File	(['core/bsinc_tables.cpp']),
+		File	(['core/buffer_storage.cpp']),
+		File	(['core/context.cpp']),
+		File	(['core/converter.cpp']),
+		File	(['core/cpu_caps.cpp']),
+		File	(['core/cubic_tables.cpp']),
+		File	(['core/devformat.cpp']),
+		File	(['core/device.cpp']),
+		File	(['core/effectslot.cpp']),
+		File	(['core/except.cpp']),
+		File	(['core/filters/biquad.cpp']),
+		File	(['core/filters/nfc.cpp']),
+		File	(['core/filters/splitter.cpp']),
+		File	(['core/fmt_traits.cpp']),
+		File	(['core/fpu_ctrl.cpp']),
+		File	(['core/helpers.cpp']),
+		File	(['core/hrtf.cpp']),
+		File	(['core/logging.cpp']),
+		File	(['core/mastering.cpp']),
+		File	(['core/mixer.cpp']),
+		File	(['core/uhjfilter.cpp']),
+		File	(['core/uiddefs.cpp']),
+		File	(['core/voice.cpp']),
+		File	(['core/mixer/mixer_c.cpp']),
+		File	(['core/mixer/mixer_sse.cpp'], lambda x: x.env.DEST_CPU in ['x86','x86_64']),
+		File	(['core/mixer/mixer_neon.cpp'], lambda x: x.env.DEST_CPU in ['arm','aarch64']),
+ 		File	(['al/auxeffectslot.cpp']),
+ 		File	(['al/buffer.cpp']),
+ 		File	(['al/debug.cpp']),
+ 		File	(['al/effect.cpp']),
+ 		File	(['al/effects/autowah.cpp']),
+ 		File	(['al/effects/chorus.cpp']),
+ 		File	(['al/effects/compressor.cpp']),
+ 		File	(['al/effects/convolution.cpp']),
+ 		File	(['al/effects/dedicated.cpp']),
+ 		File	(['al/effects/distortion.cpp']),
+ 		File	(['al/effects/echo.cpp']),
+ 		File	(['al/effects/effects.cpp']),
+ 		File	(['al/effects/equalizer.cpp']),
+ 		File	(['al/effects/fshifter.cpp']),
+ 		File	(['al/effects/modulator.cpp']),
+ 		File	(['al/effects/null.cpp']),
+ 		File	(['al/effects/pshifter.cpp']),
+ 		File	(['al/effects/reverb.cpp']),
+ 		File	(['al/effects/vmorpher.cpp']),
+ 		File	(['al/error.cpp']),
+ 		File	(['al/event.cpp']),
+ 		File	(['al/extension.cpp']),
+ 		File	(['al/filter.cpp']),
+ 		File	(['al/listener.cpp']),
+ 		File	(['al/source.cpp']),
+ 		File	(['al/state.cpp']),
+		File	(['alc/alc.cpp']),
+		File	(['alc/alu.cpp']),
+		File	(['alc/alconfig.cpp']),
+		File	(['alc/context.cpp']),
+		File	(['alc/device.cpp']),
+		File	(['alc/effects/autowah.cpp']),
+		File	(['alc/effects/chorus.cpp']),
+		File	(['alc/effects/compressor.cpp']),
+		File	(['alc/effects/convolution.cpp']),
+		File	(['alc/effects/dedicated.cpp']),
+		File	(['alc/effects/distortion.cpp']),
+		File	(['alc/effects/echo.cpp']),
+		File	(['alc/effects/equalizer.cpp']),
+		File	(['alc/effects/fshifter.cpp']),
+		File	(['alc/effects/modulator.cpp']),
+		File	(['alc/effects/null.cpp']),
+		File	(['alc/effects/pshifter.cpp']),
+		File	(['alc/effects/reverb.cpp']),
+		File	(['alc/effects/vmorpher.cpp']),
+		File	(['alc/events.cpp']),
+		File	(['alc/panning.cpp']),
+		File	(['alc/backends/base.cpp']),
+		File	(['alc/backends/loopback.cpp']),
+		File	(['alc/backends/null.cpp']),
+		File	(['alc/backends/sdl2.cpp'])
+	]
+
+	includes = [
+		'.',
+		'common',
+		'core',
+		'al',
+		'alc'
+	]
+
+	libs = []
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.stlib(
+		target   = 'openal-soft',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)

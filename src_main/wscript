@@ -28,7 +28,8 @@ PROJECTS = [
 	'engine/voice_codecs/minimp3',
 	'thirdparty/joltphysics',
 	'thirdparty/SDL2',
-	'thirdparty/protobuf-2.5.0'
+	'thirdparty/protobuf-2.5.0',
+	'thirdparty/openal-soft'
 ]
 
 def options(opt):
@@ -76,7 +77,7 @@ def configure(conf):
 		linkflags = ['-Wl,--no-undefined','-pthread','-ldl','-no-canonical-prefixes','-Wl,--no-warn-mismatch']
 		flags = ['-fvisibility=hidden']
 		march = []
-		defines += ['GNUC','_DLL_EXT=.so','_LINUX','LINUX','_POSIX','POSIX','GL_GLEXT_PROTOTYPES','DX_TO_GL_ABSTRACTION','USE_SDL']
+		defines += ['GNUC','_DLL_EXT=.so','_LINUX','LINUX','_POSIX','POSIX','DX_TO_GL_ABSTRACTION','USE_SDL','GL_GLEXT_PROTOTYPES','AL_ALEXT_PROTOTYPES']
 		if not conf.options.SILENCE:
 			warnings = ['-Wall']
 		else:
@@ -170,7 +171,8 @@ def configure(conf):
 		os.path.abspath('public'),
 		os.path.abspath('public/tier0'),
 		os.path.abspath('public/tier1'),
-		os.path.abspath('thirdparty/SDL2/include')
+		os.path.abspath('thirdparty/SDL2/include'),
+		os.path.abspath('thirdparty/openal-soft/include')
 	]
 	conf.env.append_unique('INCLUDES', includes)
 

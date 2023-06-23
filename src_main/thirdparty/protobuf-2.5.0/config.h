@@ -106,10 +106,6 @@
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "2.5.0"
 
-/* Define to necessary symbol if this constant uses a non-standard name on
-   your system. */
-/* #undef PTHREAD_CREATE_JOINABLE */
-
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
 
@@ -137,16 +133,6 @@
 
 /* Version number of package */
 #define VERSION "2.5.0"
-
-/* Define to 1 if on MINIX. */
-/* #undef _MINIX */
-
-/* Define to 2 if the system does not provide POSIX.1 features except with
-   this defined. */
-/* #undef _POSIX_1_SOURCE */
-
-/* Define to 1 if you need to in order for `stat' and other things to work. */
-/* #undef _POSIX_SOURCE */
 
 #else // LINUX
 #error "Generate thirdparty/protobuf-2.5.0/config.h for your platform"

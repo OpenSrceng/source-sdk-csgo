@@ -1376,7 +1376,7 @@ typedef int socklen_t;
 // Works for PS3 
 	inline void SetupFPUControlWord()
 	{
-#ifdef _PS3
+#if defined(_PS3) || defined(__arm__) || defined(__aarch64__)
 // TODO: PS3 compiler spits out the following errors:
 // C:/tmp/ccIN0aaa.s: Assembler messages:
 // C:/tmp/ccIN0aaa.s(80): Error: Unrecognized opcode: `fnstcw'
