@@ -523,6 +523,19 @@ uintp DownloadThread( void *voidPtr )
 
 	return 0;
 }
+
+#elif defined(ANDROID)
+
+uintp DownloadThread( void *voidPtr )
+{
+	RequestContext& rc = *(RequestContext *)voidPtr;
+
+	Warning( "DownloadThread not implemented on ANDROID!\n" );
+	Assert( 0 );
+
+	return 0;
+}
+
 #elif defined( POSIX ) && !defined( DEDICATED )
 
 #include "curl/curl.h"
