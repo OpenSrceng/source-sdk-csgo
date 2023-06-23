@@ -18,6 +18,7 @@ PROJECTS = [
 	'appframework',
 	'bitmap',
 	'bonesetup',
+	'steam',
 	'vpklib',
 	'launcher_main',
 	'launcher',
