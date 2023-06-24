@@ -44,7 +44,7 @@ def build(bld):
 		File	(['splitstring.cpp']),
 		File	(['processor_detect.cpp'], lambda x: x.env.DEST_OS == 'win32'),
 		File	(['processor_detect_linux.cpp'], lambda x: x.env.DEST_OS != 'win32'),
-		File	(['qsort_s.cpp'], lambda x: x.env.DEST_OS in 'linux'),
+		File	(['qsort_s.cpp'], lambda x: x.env.DEST_OS == 'linux'),
 		File	(['rangecheckedvar.cpp']),
 		File	(['stringpool.cpp']),
 		File	(['strtools.cpp']),

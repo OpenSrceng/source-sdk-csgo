@@ -18,7 +18,8 @@ def configure(conf):
 def build(bld):
 	sources = [
 		File	(['steam_api.cpp']),
-		File	(['steam_api_internal.cpp'])
+		File	(['steam_api_internal.cpp']),
+		File	(['steam_gameserver.cpp'])
 	]
 
 	includes = []

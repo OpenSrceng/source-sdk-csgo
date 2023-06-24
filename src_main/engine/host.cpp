@@ -3736,11 +3736,12 @@ CON_COMMAND( host_runofftime, "Run off some time without rendering/updating soun
 	SCR_UpdateScreen ();
 }
 
-#if !defined( _GAMECONSOLE )
-S_API int SteamGameServer_GetIPCCallCount();
-#else
+//#if !defined( _GAMECONSOLE )
+//S_API int SteamGameServer_GetIPCCallCount();
+//#else
 S_API int SteamGameServer_GetIPCCallCount() { return 0; }
-#endif
+//#endif
+
 void Host_ShowIPCCallCount()
 {
 	// If set to 0 then get out.

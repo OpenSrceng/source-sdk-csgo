@@ -9,7 +9,7 @@
 #include <vgui_controls/ListPanel.h>
 #include <vgui_controls/Label.h>
 #include <vgui_controls/ImageList.h>
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include <vgui/ISurface.h>
 #include "filesystem.h"
 #include "p4lib/ip4.h"

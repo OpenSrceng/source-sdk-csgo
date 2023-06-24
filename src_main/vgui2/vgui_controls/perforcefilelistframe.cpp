@@ -5,7 +5,7 @@
 //=============================================================================
 
 #include "vgui_controls/perforcefilelistframe.h"
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include "vgui_controls/Button.h"
 #include "vgui_controls/ListPanel.h"
 #include "vgui_controls/Splitter.h"

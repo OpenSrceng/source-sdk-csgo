@@ -1,0 +1,116 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	pass
+
+def build(bld):
+	sources = [
+		File	(['AnalogBar.cpp']),
+		File	(['AnimatingImagePanel.cpp']),
+		File	(['AnimationController.cpp']),
+		File	(['BitmapImagePanel.cpp']),
+		File	(['BuildFactoryHelper.cpp']),
+		File	(['BuildGroup.cpp']),
+		File	(['BuildModeDialog.cpp']),
+		File	(['Button.cpp']),
+		File	(['CheckButton.cpp']),
+		File	(['CheckButtonList.cpp']),
+		File	(['CircularProgressBar.cpp']),
+		File	(['ComboBox.cpp']),
+		File	(['consoledialog.cpp']),
+		File	(['ControllerMap.cpp']),
+		File	(['controls.cpp']),
+		File	(['cvartogglecheckbutton.cpp']),
+		File	(['DirectorySelectDialog.cpp']),
+		File	(['Divider.cpp']),
+		File	(['EditablePanel.cpp']),
+		File	(['ExpandButton.cpp']),
+		File	(['FileOpenDialog.cpp']),
+		File	(['FileOpenStateMachine.cpp']),
+		File	(['../../public/filesystem_helpers.cpp']),
+		File	(['FocusNavGroup.cpp']),
+		File	(['Frame.cpp']),
+		File	(['GraphPanel.cpp']),
+		File	(['HTML.cpp']),
+		File	(['Image.cpp']),
+		File	(['ImageList.cpp']),
+		File	(['ImagePanel.cpp']),
+		File	(['InputDialog.cpp']),
+		File	(['KeyBindingHelpDialog.cpp']),
+		File	(['KeyBoardEditorDialog.cpp']),
+		File	(['KeyRepeat.cpp']),
+		File	(['Label.cpp']),
+		File	(['ListPanel.cpp']),
+		File	(['ListViewPanel.cpp']),
+		File	(['Menu.cpp']),
+		File	(['MenuBar.cpp']),
+		File	(['MenuButton.cpp']),
+		File	(['MenuItem.cpp']),
+		File	(['MessageBox.cpp']),
+		File	(['MessageDialog.cpp']),
+		File	(['Panel.cpp']),
+		File	(['PanelListPanel.cpp']),
+		File	(['PerforceFileExplorer.cpp']),
+		File	(['PerforceFileList.cpp']),
+		File	(['perforcefilelistframe.cpp']),
+		File	(['ProgressBar.cpp']),
+		File	(['ProgressBox.cpp']),
+		File	(['PropertyDialog.cpp']),
+		File	(['PropertyPage.cpp']),
+		File	(['PropertySheet.cpp']),
+		File	(['QueryBox.cpp']),
+		File	(['RadioButton.cpp']),
+		File	(['RichText.cpp']),
+		File	(['RotatingProgressBar.cpp']),
+		File	(['savedocumentquery.cpp']),
+		File	(['ScalableImagePanel.cpp']),
+		File	(['ScrollableEditablePanel.cpp']),
+		File	(['ScrollBar.cpp']),
+		File	(['ScrollBarSlider.cpp']),
+		File	(['SectionedListPanel.cpp']),
+		File	(['Slider.cpp']),
+		File	(['Splitter.cpp']),
+		File	(['subrectimage.cpp']),
+		File	(['TextEntry.cpp']),
+		File	(['TextImage.cpp']),
+		File	(['ToggleButton.cpp']),
+		File	(['Tooltip.cpp']),
+		File	(['ToolWindow.cpp']),
+		File	(['TreeView.cpp']),
+		File	(['TreeViewListControl.cpp']),
+		File	(['URLLabel.cpp']),
+		File	(['WizardPanel.cpp']),
+		File	(['WizardSubPanel.cpp']),
+		File	(['../src/vgui_key_translation.cpp'])
+	]
+
+	includes = []
+
+	libs = []
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.stlib(
+		target   = 'vgui_controls',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)

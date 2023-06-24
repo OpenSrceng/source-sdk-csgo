@@ -10,7 +10,7 @@
 #include <vgui_controls/ComboBox.h>
 #include <vgui_controls/Button.h>
 #include <vgui_controls/Tooltip.h>
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include "vgui/ISystem.h"
 #include "filesystem.h"
 #include <ctype.h>

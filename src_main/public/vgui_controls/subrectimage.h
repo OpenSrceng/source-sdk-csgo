@@ -12,7 +12,7 @@
 #endif
 
 #include "vgui_controls/Image.h"
-#include "vgui/VGUI.h"
+#include "vgui/vgui.h"
 
 
 //-----------------------------------------------------------------------------

@@ -15,6 +15,15 @@ S_API void SteamAPI_Shutdown()
 {
 }
 
+S_API bool SteamAPI_RestartAppIfNecessary( uint32 unOwnAppID )
+{
+	return false;
+}
+
+S_API void SteamAPI_WriteMiniDump( uint32 uStructuredExceptionCode, void* pvExceptionInfo, uint32 uBuildID )
+{
+}
+
 S_API void SteamAPI_SetMiniDumpComment( const char *pchMsg )
 {
 }
@@ -42,5 +51,9 @@ S_API void SteamAPI_UnregisterCallResult( class CCallbackBase *pCallback, SteamA
 S_API HSteamPipe SteamAPI_GetHSteamPipe()
 {
 	return 0;
+}
+
+S_API void SteamAPI_SetTryCatchCallbacks( bool bTryCatchCallbacks )
+{
 }
 

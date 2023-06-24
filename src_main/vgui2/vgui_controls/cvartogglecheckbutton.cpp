@@ -5,7 +5,7 @@
 // $NoKeywords: $
 //=============================================================================//
 
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 
 #include <vgui/ISurface.h>
 #include <vgui/IScheme.h>

@@ -13,7 +13,7 @@
 #include <vgui/ISystem.h>
 #include <vgui/IImage.h>
 #include <vgui/IVGui.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 
 #include <vgui_controls/AnimatingImagePanel.h>
 

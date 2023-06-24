@@ -13,7 +13,7 @@
 #include <vgui/IScheme.h>
 #include <vgui/ISurface.h>
 #include <vgui/MouseCode.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 
 #include <vgui_controls/ScrollBarSlider.h>
 #include <vgui_controls/Controls.h>

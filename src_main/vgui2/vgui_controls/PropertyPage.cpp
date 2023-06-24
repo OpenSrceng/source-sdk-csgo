@@ -8,7 +8,7 @@
 #include "vgui/IScheme.h"
 #include "vgui/KeyCode.h"
 #include "vgui/ISurface.h"
-#include "KeyValues.h"
+#include "keyvalues.h"
 
 #include "vgui_controls/PropertyPage.h"
 #include "vgui_controls/Controls.h"

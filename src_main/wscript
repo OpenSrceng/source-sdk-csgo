@@ -18,8 +18,12 @@ PROJECTS = [
 	'appframework',
 	'bitmap',
 	'bonesetup',
+	'dmxloader',
+	'soundsystem/lowlevel',
 	'steam',
+	'vgui2/vgui_controls',
 	'vpklib',
+	'vtf',
 	'launcher_main',
 	'launcher',
 	'filesystem',
@@ -28,9 +32,12 @@ PROJECTS = [
 	'vphysics',
 	'engine/voice_codecs/minimp3',
 	'thirdparty/joltphysics',
-	'thirdparty/SDL2',
+	'thirdparty/jpeg-9e',
+	'thirdparty/openal-soft',
 	'thirdparty/protobuf-2.5.0',
-	'thirdparty/openal-soft'
+	'thirdparty/quickhull',
+	'thirdparty/SDL2',
+	'utils/bzip2'
 ]
 
 def options(opt):
@@ -110,6 +117,7 @@ def configure(conf):
 		else:
 			conf.check(lib='SDL2', uselib_store='SDL2')
 			conf.check(lib='curl', uselib_store='curl')
+		conf.check(lib='z', uselib_store='zlib')
 
 		if conf.env.DEST_CPU in ['arm','aarch64']:
 			cflags += ['-fsigned-char']

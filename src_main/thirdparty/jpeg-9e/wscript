@@ -1,0 +1,87 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	pass
+
+def build(bld):
+	sources = [
+		File	(['jaricom.c']),
+		File	(['jcapimin.c']),
+		File	(['jcapistd.c']),
+		File	(['jcarith.c']),
+		File	(['jccoefct.c']),
+		File	(['jccolor.c']),
+		File	(['jcdctmgr.c']),
+		File	(['jchuff.c']),
+		File	(['jcinit.c']),
+		File	(['jcmainct.c']),
+		File	(['jcmarker.c']),
+		File	(['jcmaster.c']),
+		File	(['jcomapi.c']),
+		File	(['jcparam.c']),
+		File	(['jcprepct.c']),
+		File	(['jcsample.c']),
+		File	(['jctrans.c']),
+		File	(['jdapimin.c']),
+		File	(['jdapistd.c']),
+		File	(['jdarith.c']),
+		File	(['jdatadst.c']),
+		File	(['jdatasrc.c']),
+		File	(['jdcoefct.c']),
+		File	(['jdcolor.c']),
+		File	(['jddctmgr.c']),
+		File	(['jdhuff.c']),
+		File	(['jdinput.c']),
+		File	(['jdmainct.c']),
+		File	(['jdmarker.c']),
+		File	(['jdmaster.c']),
+		File	(['jdmerge.c']),
+		File	(['jdpostct.c']),
+		File	(['jdsample.c']),
+		File	(['jdtrans.c']),
+		File	(['jerror.c']),
+		File	(['jfdctflt.c']),
+		File	(['jfdctfst.c']),
+		File	(['jfdctint.c']),
+		File	(['jidctflt.c']),
+		File	(['jidctfst.c']),
+		File	(['jidctint.c']),
+		File	(['jquant1.c']),
+		File	(['jquant2.c']),
+		File	(['jutils.c']),
+		File	(['jmemmgr.c']),
+		File	(['jmemansi.c'])
+	]
+
+	includes = [
+		'../../public/jpeglib'
+	]
+
+	libs = []
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.stlib(
+		target   = 'jpeg',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)

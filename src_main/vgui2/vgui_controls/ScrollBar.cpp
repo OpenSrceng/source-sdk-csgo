@@ -11,7 +11,7 @@
 #include <vgui/ISystem.h>
 #include <vgui/IInput.h>
 #include <vgui/IImage.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 
 #include <vgui_controls/ScrollBar.h>
 #include <vgui_controls/ScrollBarSlider.h>

@@ -107,10 +107,6 @@ void CSosOperatorOutput::Execute( void *pVoidMem, channel_t *pChannel, CScratchP
 		case SOS_OUT_SAVE_RESTORE:
 			pChannel->flags.m_bShouldSaveRestore = pStructMem->m_flInputFloat[0] > 0.0 ? true : false;
 			break;
-		case SOS_OUT_PHONON_XFADE: {
-			pChannel->hrtf.lerp = pStructMem->m_flInputFloat[0];
-			break;
-		}
 
 		}
 	}
@@ -162,9 +158,6 @@ void CSosOperatorOutput::Print( void *pVoidMem, CSosOperatorStack *pStack, int n
 		break;
 	case SOS_OUT_BLOCK_START:
 		pOutTypeString = "block_start";
-		break;
-	case SOS_OUT_PHONON_XFADE:
-		pOutTypeString = "phonon_xfade";
 		break;
 	}
 	Log_Msg( LOG_SND_OPERATORS, OpColor, "%*sOutput: %s\n", nLevel, "    ", pOutTypeString );
@@ -241,10 +234,6 @@ void CSosOperatorOutput::ParseKV( CSosOperatorStack *pStack, void *pVoidMem, Key
 					else if ( !V_strcasecmp( pValueString, "block_start" ) )
 					{
 						pStructMem->m_nOutType = SOS_OUT_BLOCK_START;
-					}
-					else if (!V_strcasecmp(pValueString, "phonon_xfade"))
-					{
-						pStructMem->m_nOutType = SOS_OUT_PHONON_XFADE;
 					}
 				}
 				else

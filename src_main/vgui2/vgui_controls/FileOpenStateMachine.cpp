@@ -6,7 +6,7 @@
 //=============================================================================
 
 #include "vgui_controls/FileOpenStateMachine.h"
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include "vgui_controls/FileOpenDialog.h"
 #include "vgui_controls/MessageBox.h"
 #include "vgui_controls/perforcefilelistframe.h"

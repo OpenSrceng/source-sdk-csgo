@@ -14,7 +14,7 @@
 
 #include <utlvector.h>
 #include <utllinkedlist.h>
-#include <vgui/VGUI.h>
+#include <vgui/vgui.h>
 #include <vgui_controls/Panel.h>
 #include <vgui_controls/PHandle.h>
 #include <vgui_controls/Label.h>

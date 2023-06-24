@@ -378,17 +378,22 @@ def build(bld):
 		'bzip2',
 		'protobuf',
 		'curl',
-		'openal-soft'
+		'openal-soft',
+		'zlib',
+		'quickhull'
 	]
 
 	if not bld.options.DEDICATED:
 		libs += [
+			'matsys_controls',
+			'soundsystem_lowlevel',
 			'vgui_controls'
 		]
-		if bld.env.DEST_OS == 'linux':
-			libs += [
-				'videocfg'
-			]
+	if not (bld.options.DEDICATED and bld.env.DEST_OS == 'linux'):
+		libs += [
+			'videocfg',
+			'jpeg'
+		]
 
 	sources_platform = []
 	for i in sources:

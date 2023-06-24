@@ -14,7 +14,7 @@
 #include <vgui/ISystem.h>
 #include <vgui/IVGui.h>
 #include <vgui/KeyCode.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 
 #include <vgui_controls/FocusNavGroup.h>
 #include <vgui_controls/Image.h>

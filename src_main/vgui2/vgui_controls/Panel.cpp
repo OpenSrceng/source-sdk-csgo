@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <utlvector.h>
-#include <vstdlib/IKeyValuesSystem.h>
+#include <vstdlib/ikeyvaluessystem.h>
 #include <ctype.h>	// isdigit()
 
 #include <materialsystem/imaterial.h>
@@ -22,7 +22,7 @@
 #include <vgui/ISystem.h>
 #include <vgui/ILocalize.h>
 #include <vgui/IVGui.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 #include <vgui/MouseCode.h>
 
 #include <vgui_controls/Panel.h>
@@ -33,7 +33,7 @@
 #include "vgui_controls/Menu.h"
 #include "vgui_controls/MenuItem.h"
 
-#include "UtlSortVector.h"
+#include "utlsortvector.h"
 
 #include "tier1/utldict.h"
 #include "tier1/utlbuffer.h"

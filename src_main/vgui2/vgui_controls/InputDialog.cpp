@@ -9,7 +9,7 @@
 #include <vgui_controls/Button.h>
 #include <vgui_controls/CheckButton.h>
 #include <vgui_controls/TextEntry.h>
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include "tier1/fmtstr.h"
 #include "vgui/IInput.h"
 

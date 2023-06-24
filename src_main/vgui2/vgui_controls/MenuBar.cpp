@@ -11,7 +11,7 @@
 #include <vgui/IBorder.h>
 #include <vgui/ISurface.h>
 #include <vgui/KeyCode.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 
 #include <vgui_controls/MenuBar.h>
 #include <vgui_controls/MenuButton.h>

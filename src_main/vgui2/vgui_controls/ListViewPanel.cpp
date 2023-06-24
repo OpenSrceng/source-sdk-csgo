@@ -10,7 +10,7 @@
 
 #include <vgui/MouseCode.h>
 #include <vgui/KeyCode.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 #include <vgui/ISurface.h>
 #include <vgui/IVGui.h>
 #include <vgui/IInput.h>

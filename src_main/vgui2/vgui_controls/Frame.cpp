@@ -28,7 +28,7 @@
 #include "vgui_controls/MenuButton.h"
 #include "vgui_controls/TextImage.h"
 
-#include "KeyValues.h"
+#include "keyvalues.h"
 
 #include <stdio.h>
 

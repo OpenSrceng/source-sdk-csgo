@@ -11,7 +11,7 @@
 #include "vgui/ISystem.h"
 #include "vgui/MouseCode.h"
 #include "vgui/Cursor.h"
-#include "KeyValues.h"
+#include "keyvalues.h"
 
 #include "vgui_controls/URLLabel.h"
 #include "vgui_controls/TextImage.h"

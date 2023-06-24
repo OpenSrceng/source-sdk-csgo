@@ -1560,7 +1560,6 @@ bool CBaseClient::SendSnapshot( CClientFrame *pFrame )
 	}
 	else
 	{
-		// just send it as unreliable snapshot
 		bSendOK = m_NetChannel->SendDatagram( &msg ) > 0;
 	}
 		

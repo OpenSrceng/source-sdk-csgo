@@ -6,7 +6,7 @@
 //=============================================================================//
 
 #include <vgui/ISurface.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 #include <vgui/IInput.h>
 
 #include <vgui_controls/Button.h>

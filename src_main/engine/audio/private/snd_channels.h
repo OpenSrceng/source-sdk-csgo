@@ -8,7 +8,6 @@
 #define SND_CHANNELS_H
 
 #include "mathlib/vector.h"
-#include "phonon/phonon_3d.h"
 
 #if defined( _WIN32 )
 #pragma once
@@ -44,15 +43,6 @@ struct gain_t
 	float		ob_gain_inc;	// crossfade increment
 };
 
-struct hrtf_info_t
-{
-	Vector		vec;	// Sound source relative to the listener, updated every frame for channels using HRTF.
-	float		lerp;	// 1.0 = use phonon fully, 0.0 = don't use phonon at all.
-	bool		follow_entity;   // If true, we update the position of the entity every frame, otherwise we use the position of the sound.
-	bool		bilinear_filtering;  // If true, we use more expensive bilinear filtering for this sound.
-	bool		debug_lock_position;   // If true, the vec will not be modified after the sound starts.
-};
-
 //-----------------------------------------------------------------------------
 // Purpose: Each currently playing wave is stored in a channel
 //-----------------------------------------------------------------------------
@@ -62,8 +52,6 @@ struct channel_t
 {
 	int			guid;			// incremented each time a channel is allocated (to match with channel free in tools, etc.)
 	int			userdata;		// user specified data for syncing to tools
-
-	hrtf_info_t hrtf;
 
 	CSfxTable	*sfx;			// the actual sound
 	CAudioMixer	*pMixer;		// The sound's instance data for this channel

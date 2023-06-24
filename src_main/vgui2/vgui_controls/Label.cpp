@@ -15,7 +15,7 @@
 #include <vgui/IPanel.h>
 #include <vgui/ISurface.h>
 #include <vgui/IScheme.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 
 #include <vgui_controls/Label.h>
 #include <vgui_controls/Image.h>

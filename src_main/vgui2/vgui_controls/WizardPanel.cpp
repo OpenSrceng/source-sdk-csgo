@@ -6,7 +6,7 @@
 //=============================================================================//
 
 #include <vgui/IVGui.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 
 #include <vgui_controls/BuildGroup.h>
 #include <vgui_controls/Button.h>

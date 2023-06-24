@@ -8,7 +8,7 @@
 #include "vgui_controls/ControllerMap.h"
 #include "vgui/ISurface.h"
 #include "vgui/KeyCode.h"
-#include "KeyValues.h"
+#include "keyvalues.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
