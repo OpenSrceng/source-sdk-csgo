@@ -17,7 +17,6 @@ def configure(conf):
 
 def build(bld):
 	sources = [
-		File	(['convert_x360.cpp']),
 		File	(['s3tc_decode.cpp'], lambda x: x.env.DEST_OS == 'win32'),
 		File	(['vtf.cpp'])
 	]
