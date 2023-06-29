@@ -5,7 +5,7 @@
 //=============================================================================
 
 #include "matsys_controls/mdlsequencepicker.h"
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include "tier1/utldict.h"
 #include "datacache/imdlcache.h"
 #include "filesystem.h"

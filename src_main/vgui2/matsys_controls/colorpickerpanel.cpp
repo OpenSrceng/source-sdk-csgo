@@ -15,7 +15,7 @@
 #include "vgui_controls/TextEntry.h"
 #include "vgui_controls/RadioButton.h"
 #include "vgui/IInput.h"
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include "bitmap/imageformat.h"
 
 using namespace vgui;

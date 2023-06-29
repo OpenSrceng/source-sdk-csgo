@@ -9,7 +9,7 @@
 #include "materialsystem/imaterialsystem.h"
 #include "materialsystem/itexture.h"
 #include "VGuiMatSurface/IMatSystemSurface.h"
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include "pixelwriter.h"
 
 

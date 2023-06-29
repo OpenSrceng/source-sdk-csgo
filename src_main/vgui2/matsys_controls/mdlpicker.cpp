@@ -5,7 +5,7 @@
 //=============================================================================
 
 #include "matsys_controls/mdlpicker.h"
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include "tier1/utldict.h"
 #include "filesystem.h"
 #include "studio.h"

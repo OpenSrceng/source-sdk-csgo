@@ -6,7 +6,7 @@
 
 #include "filesystem.h"
 #include "matsys_controls/picker.h"
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include "vgui_controls/ListPanel.h"
 #include "vgui_controls/TextEntry.h"
 #include "vgui_controls/Button.h"

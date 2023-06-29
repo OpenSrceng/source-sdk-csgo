@@ -11,7 +11,7 @@
 #include "materialsystem/imaterialsystem.h"
 #include "materialsystem/itexture.h"
 #include "materialsystem/imesh.h"
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 
 
 using namespace vgui;
