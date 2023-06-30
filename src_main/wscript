@@ -38,6 +38,7 @@ PROJECTS = [
 	'datacache',
 	'studiorender',
 	'soundemittersystem',
+	'vscript',
 	'thirdparty/joltphysics',
 	'thirdparty/jpeg-9e',
 	'thirdparty/openal-soft',

@@ -1,0 +1,78 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	conf.env.append_unique('DEFINES', ['VSCRIPT_DLL_EXPORT'])
+ 
+def build(bld):
+	sources = [
+		File	(['vscript.cpp']),
+		File	(['languages/squirrel/vsquirrel/vsquirrel.cpp']),
+		File	(['languages/squirrel/squirrel/sqapi.cpp']),
+		File	(['languages/squirrel/squirrel/sqbaselib.cpp']),
+		File	(['languages/squirrel/squirrel/sqclass.cpp']),
+		File	(['languages/squirrel/squirrel/sqcompiler.cpp']),
+		File	(['languages/squirrel/squirrel/sqdebug.cpp']),
+		File	(['languages/squirrel/squirrel/sqfuncstate.cpp']),
+		File	(['languages/squirrel/squirrel/sqlexer.cpp']),
+		File	(['languages/squirrel/squirrel/sqmem.cpp']),
+		File	(['languages/squirrel/squirrel/sqobject.cpp']),
+		File	(['languages/squirrel/squirrel/sqstate.cpp']),
+		File	(['languages/squirrel/squirrel/sqtable.cpp']),
+		File	(['languages/squirrel/squirrel/sqvm.cpp']),
+		File	(['languages/squirrel/sqdbg/sqrdbg.cpp']),
+		File	(['languages/squirrel/sqdbg/sqdbgserver.cpp']),
+		File	(['languages/squirrel/sqstdlib/sqstdaux.cpp']),
+		File	(['languages/squirrel/sqstdlib/sqstdblob.cpp']),
+		File	(['languages/squirrel/sqstdlib/sqstdmath.cpp']),
+		File	(['languages/squirrel/sqstdlib/sqstdrex.cpp']),
+		File	(['languages/squirrel/sqstdlib/sqstdstream.cpp']),
+		File	(['languages/squirrel/sqstdlib/sqstdstring.cpp']),
+		File	(['languages/squirrel/sqplus/SquirrelBindingsUtilsWin32.cpp'], lambda x: x.env.DEST_OS == 'win32'),
+		File	(['languages/squirrel/sqplus/SqPlus.cpp']),
+		File	(['languages/squirrel/sqplus/SquirrelBindingsUtils.cpp']),
+		File	(['languages/squirrel/sqplus/SquirrelObject.cpp']),
+		File	(['languages/squirrel/sqplus/SquirrelVM.cpp']),
+		File	(['../public/tier0/memoverride.cpp'])
+	]
+
+	includes = [
+		'languages/squirrel/include',
+		'languages/squirrel/sqplus',
+	]
+
+	libs = [
+		'tier0',
+		'tier1',
+		'tier2',
+		'interfaces',
+		'vstdlib',
+		'mathlib'
+	]
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.shlib(
+		target   = 'vscript',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		install_path = bld.env.BINDIR,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)
