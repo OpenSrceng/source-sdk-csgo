@@ -29,12 +29,8 @@
 // NOTE: This must be the last file included!
 #include "tier0/memdbgon.h"
 
-#if defined( _PS3 ) || defined( _OSX )
 #define g_pShaderAPI ShaderAPI()
 #define ShaderApiParam( x ) g_pShaderAPIDX8
-#else
-#define ShaderApiParam( x ) x
-#endif
 
 
 //#define DEBUG_DEPTH 1
@@ -312,52 +308,7 @@ void CShaderSystem::LoadAllShaderDLLs( )
 	// Add the shaders to the dictionary of shaders...
 	SetupShaderDictionary( i );
 
-#if defined( _PS3 ) || defined( _OSX )
 	LoadShaderDLL( "stdshader_dx9" DLL_EXT_STRING );
-#else // _PS3 || _OSX
-
-	// 360 has the the debug shaders in its dx9 dll
-	if ( IsPC() || !IsX360() )
-	{
-		// Always need the debug shaders
-		LoadShaderDLL( "stdshader_dbg" );
-	}
-
-	// Load up standard shader DLLs...
-	int dxSupportLevel = HardwareConfig()->GetMaxDXSupportLevel();
-	Assert( dxSupportLevel >= 60 );
-	dxSupportLevel /= 10;
-
-	// 360 only supports its dx9 dll
-	int dxStart = 9;
-	char buf[32];
-	for ( i = dxStart; i <= dxSupportLevel; ++i )
-	{
-		Q_snprintf( buf, sizeof( buf ), "stdshader_dx%d", i );
-		LoadShaderDLL( buf );
-	}
-
-	const char *pShaderName = NULL;
-#ifdef _DEBUG
-	pShaderName = CommandLine()->ParmValue( "-shader" );
-#endif
-	if ( !pShaderName )
-	{
-		pShaderName = HardwareConfig()->GetHWSpecificShaderDLLName();
-	}
-	if ( pShaderName )
-	{
-		LoadShaderDLL( pShaderName );
-	}
-
-#ifdef _DEBUG
-	// For fast-iteration debugging
-	if ( CommandLine()->FindParm( "-testshaders" ) )
-	{
-		LoadShaderDLL( "shader_test" );
-	}
-#endif
-#endif // !_PS3
 }
 
 void CShaderSystem::LoadModShaderDLLs( int dxSupportLevel )
@@ -417,48 +368,9 @@ bool CShaderSystem::LoadShaderDLL( const char *pFullPath )
 //-----------------------------------------------------------------------------
 bool CShaderSystem::LoadShaderDLL( const char *pFullPath, const char *pPathID, bool bModShaderDLL )
 {
-#if !defined( _PS3 ) && !defined( _OSX )
-	if ( !pFullPath && !pFullPath[0] )
-		return true;
-
-	// Load the new shader
-	bool bValidatedDllOnly = true;
-	if ( bModShaderDLL )
-		bValidatedDllOnly = false;
-
-	CSysModule *hInstance = g_pFullFileSystem->LoadModule( pFullPath, pPathID, bValidatedDllOnly );
-	if ( !hInstance )
-		return false;
-
-	// Get at the shader DLL interface
-	CreateInterfaceFn factory = Sys_GetFactory( hInstance );
-	if (!factory)
-	{
-		g_pFullFileSystem->UnloadModule( hInstance );
-		return false;
-	}
-
-	IShaderDLLInternal *pShaderDLL = (IShaderDLLInternal*)factory( SHADER_DLL_INTERFACE_VERSION, NULL );
-	if ( !pShaderDLL )
-	{
-		g_pFullFileSystem->UnloadModule( hInstance );
-		return false;
-	}
-
-	// Allow the DLL to try to connect to interfaces it needs
-	if ( !pShaderDLL->Connect( Sys_GetFactoryThis(), false ) )
-	{
-		g_pFullFileSystem->UnloadModule( hInstance );
-		return false;
-	}
-
-#else
-
 	CSysModule *hInstance = NULL;
 	IShaderDLLInternal *pShaderDLL = GetShaderDLLInternal();
 	pShaderDLL->Connect( Sys_GetFactoryThis(), false );
-
-#endif // !_PS3 && !_OSX
 
 	// FIXME: We need to do some sort of shader validation here for anticheat.
 

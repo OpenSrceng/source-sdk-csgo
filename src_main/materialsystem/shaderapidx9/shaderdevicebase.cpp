@@ -38,12 +38,7 @@ CShaderDeviceBase *g_pShaderDevice;
 CShaderAPIBase *g_pShaderAPI;
 CShaderDeviceMgrBase *g_pShaderDeviceMgr;
 IShaderShadow *g_pShaderShadow;
-#if !defined( _PS3 ) && !defined( _OSX )
-IShaderUtil* g_pShaderUtil;		// The main shader utility interface
-IVJobs * g_pVJobs;
-#else
 extern IVJobs * g_pVJobs;
-#endif
 
 bool g_bUseShaderMutex = false;	// Shader mutex globals
 bool g_bShaderAccessDisallowed;
@@ -99,9 +94,7 @@ static void InitShaderAPICVars( )
 CShaderDeviceMgrBase::CShaderDeviceMgrBase()
 {
 	m_pDXSupport = NULL;
-#if defined( _PS3 ) || defined( _OSX )
 	g_pShaderDeviceMgr = this;
-#endif
 }
 
 CShaderDeviceMgrBase::~CShaderDeviceMgrBase()
@@ -151,10 +144,7 @@ bool CShaderDeviceMgrBase::Connect( CreateInterfaceFn factory )
 	ConnectTier1Libraries( &actualFactory, 1 );
 	InitShaderAPICVars();
 	ConnectTier2Libraries( &actualFactory, 1 );
-#if !defined( _PS3 ) && !defined( _OSX )
-	if ( !g_pShaderUtil )
-		g_pShaderUtil = (IShaderUtil*)ShaderDeviceFactory( SHADER_UTIL_INTERFACE_VERSION, NULL );
-#endif
+
 	if ( !g_pVJobs )
 		g_pVJobs = (IVJobs *)ShaderDeviceFactory( VJOBS_INTERFACE_VERSION, NULL );
 	
@@ -177,10 +167,6 @@ void CShaderDeviceMgrBase::Disconnect()
 {
 	LOCK_SHADERAPI();
 
-#if !defined( _PS3 ) && !defined( _OSX )
-	g_pShaderDeviceMgr = NULL;
-	g_pShaderUtil = NULL;
-#endif
 	DisconnectTier2Libraries();
 	ConVar_Unregister();
 	DisconnectTier1Libraries();

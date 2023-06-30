@@ -986,9 +986,7 @@ Vector CMatRenderContextBase::GetToneMappingScaleLinear( void )
 }
 
 #undef g_pShaderAPI
-#if defined( _PS3 ) || defined( _OSX )
 #define g_pShaderAPI ShaderAPI()
-#endif
 
 //-----------------------------------------------------------------------------
 //

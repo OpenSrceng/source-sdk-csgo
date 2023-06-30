@@ -18,13 +18,11 @@
 #include "tier0/dbg.h"
 #include "tier2/tier2.h"
 
-#if defined( _PS3 ) || defined( _OSX )
 #include "shaderapidx9/shaderapidx8.h"
 #include "shaderapidx9/shaderdevicedx8.h"
 #include "shaderapidx9/hardwareconfig.h"
 #include "shaderapidx9/shaderapidx8_global.h"
 #include "shaderapidx9/shadershadowdx8.h"
-#endif
 
 #if defined( INCLUDE_SCALEFORM )
 #include "scaleformui/scaleformui.h"
@@ -91,12 +89,6 @@ inline IShaderSystemInternal* ShaderSystem()
 
 #ifdef _PS3
 #include "shaderapidx9/hardwareconfig_ps3nonvirt.h"
-#elif !defined( _OSX )
-inline IHardwareConfigInternal *HardwareConfig()
-{
-	extern IHardwareConfigInternal* g_pHWConfig;
-	return g_pHWConfig;
-}
 #endif
 
 #if defined( INCLUDE_SCALEFORM )

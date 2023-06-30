@@ -744,32 +744,7 @@ void CMaterialSystem::DestroyShaderAPI()
 //-----------------------------------------------------------------------------
 void CMaterialSystem::SetShaderAPI( char const *pShaderAPIDLL )
 {
-#if defined( _PS3 ) || defined( _OSX )
 	return;
-#endif
-
-	if ( m_ShaderAPIFactory )
-	{
-		Warning( "Cannot set the shader API twice!\n" );
-		return;
-	}
-
-	if ( !pShaderAPIDLL )
-	{
-		pShaderAPIDLL = "shaderapidx9";
-	}
-
-	// m_pShaderDLL is needed to spew driver info
-	Assert( pShaderAPIDLL );
-	int len = Q_strlen( pShaderAPIDLL ) + 1;
-	m_pShaderDLL = new char[len];
-	memcpy( m_pShaderDLL, pShaderAPIDLL, len );
-
-	m_ShaderAPIFactory = CreateShaderAPI( pShaderAPIDLL );
-	if ( !m_ShaderAPIFactory )
-	{
-		DestroyShaderAPI();
-	}
 }
 	
 
@@ -793,15 +768,6 @@ bool CMaterialSystem::Connect( CreateInterfaceFn factory )
 	g_pVJobs = ( IVJobs* )factory( VJOBS_INTERFACE_VERSION, NULL );
 
 	// Get at the interfaces exported by the shader DLL
-
-#ifndef _OSX
-	g_pShaderDeviceMgr = (IShaderDeviceMgr*)m_ShaderAPIFactory( SHADER_DEVICE_MGR_INTERFACE_VERSION, 0 );
-	if ( !g_pShaderDeviceMgr )
-		return false;
-	g_pHWConfig = (IHardwareConfigInternal*)m_ShaderAPIFactory( MATERIALSYSTEM_HARDWARECONFIG_INTERFACE_VERSION, 0 );
-	if ( !g_pHWConfig )
-		return false;
-#endif
 
 #ifndef DEDICATED
 
@@ -839,19 +805,6 @@ bool CMaterialSystem::Connect( CreateInterfaceFn factory )
 
 #endif // !DEDICATED
 
-#ifndef _OSX
-	// FIXME: ShaderAPI, ShaderDevice, and ShaderShadow should only come in after setting mode
-	g_pShaderAPI = (IShaderAPI*)m_ShaderAPIFactory( SHADERAPI_INTERFACE_VERSION, 0 );
-	if ( !g_pShaderAPI )
-		return false;
-	g_pShaderDevice = (IShaderDevice*)m_ShaderAPIFactory( SHADER_DEVICE_INTERFACE_VERSION, 0 );
-	if ( !g_pShaderDevice )
-		return false;
-	g_pShaderShadow = (IShaderShadow*)m_ShaderAPIFactory( SHADERSHADOW_INTERFACE_VERSION, 0 );
-	if ( !g_pShaderShadow )
-		return false;
-#endif
-
 	// Remember the factory for connect
 	g_fnMatSystemConnectCreateInterface = factory;
 
@@ -875,12 +828,6 @@ void CMaterialSystem::Disconnect()
 		// Unload the DLL
 		DestroyShaderAPI();
 	}
-#if !defined( _PS3 ) && !defined( _OSX )
-	g_pShaderAPI = NULL;
-	g_pHWConfig = NULL;
-	g_pShaderShadow = NULL;
-	g_pShaderDevice = NULL;
-#endif
 
 #if defined( INCLUDE_SCALEFORM )
 	g_pScaleformUI = NULL;
@@ -1868,15 +1815,6 @@ void CMaterialSystem::ReleaseShaderObjects( int nChangeFlags )
 
 void CMaterialSystem::RestoreShaderObjects( CreateInterfaceFn shaderFactory, int nChangeFlags )
 {
-#if !defined( _PS3 ) && !defined( _OSX )
-	if ( shaderFactory )
-	{
-		g_pShaderAPI = (IShaderAPI*)shaderFactory( SHADERAPI_INTERFACE_VERSION, NULL );
-		g_pShaderDevice = (IShaderDevice*)shaderFactory( SHADER_DEVICE_INTERFACE_VERSION, NULL );
-		g_pShaderShadow = (IShaderShadow*)shaderFactory( SHADERSHADOW_INTERFACE_VERSION, NULL );
-	}
-#endif
-
 	for( MaterialHandle_t i = m_MaterialDict.FirstMaterial(); i != m_MaterialDict.InvalidMaterial(); i = m_MaterialDict.NextMaterial( i ) )
 	{
 		IMaterialInternal *pMat = m_MaterialDict.GetMaterialInternal( i );

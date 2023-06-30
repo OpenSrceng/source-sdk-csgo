@@ -14,11 +14,11 @@ def options(opt):
 
 def configure(conf):
 	conf.env.append_unique('DEFINES', ['TOGL_DLL_EXPORT'])
-	if conf.env.DEST_OS != 'darwin':
+	if conf.env.DEST_OS == 'win32':
 		conf.env.append_unique('DEFINES', ['strncpy=use_Q_strncpy_instead','_snprintf=use_Q_snprintf_instead'])
  
 def build(bld):
-	if bld.options.DEDICATED:
+	if bld.options.DEDICATED and not bld.options.TOGL:
 		return
 
 	sources = [

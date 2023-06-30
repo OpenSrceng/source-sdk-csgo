@@ -52,13 +52,8 @@ private:
 //-----------------------------------------------------------------------------
 // Global interfaces/structures
 //-----------------------------------------------------------------------------
-#if !defined( _PS3 ) && !defined( _OSX )
-IMaterialSystemHardwareConfig* g_pHardwareConfig;
-const MaterialSystem_Config_t *g_pConfig;
-#else
 extern MaterialSystem_Config_t g_config;
 const MaterialSystem_Config_t *g_pConfig = &g_config;
-#endif
 
 
 //-----------------------------------------------------------------------------
@@ -119,37 +114,15 @@ bool CShaderDLL::Connect( CreateInterfaceFn factory, bool bIsMaterialSystem )
 {
 #if defined( _PS3 )
 	return true;
-#elif defined( OSX )
+#else
 	g_pSLShaderSystem =  (IShaderSystem*)factory( SHADERSYSTEM_INTERFACE_VERSION, NULL );
 	return ( g_pSLShaderSystem != NULL );
-#else
-	g_pHardwareConfig =  (IMaterialSystemHardwareConfig*)factory( MATERIALSYSTEM_HARDWARECONFIG_INTERFACE_VERSION, NULL );
-	g_pConfig = (const MaterialSystem_Config_t*)factory( MATERIALSYSTEM_CONFIG_VERSION, NULL );
-	g_pSLShaderSystem =  (IShaderSystem*)factory( SHADERSYSTEM_INTERFACE_VERSION, NULL );
-
-	if ( !bIsMaterialSystem )
-	{
-		ConnectTier1Libraries( &factory, 1 );
-  		InitShaderLibCVars( factory );
-	}
-
-	return ( g_pConfig != NULL ) && (g_pHardwareConfig != NULL) && ( g_pSLShaderSystem != NULL );
 #endif
 }
 
 void CShaderDLL::Disconnect( bool bIsMaterialSystem )
 {
-#if defined( OSX )
-	g_pSLShaderSystem = NULL;
-#elif !defined( _PS3 )
-	if ( !bIsMaterialSystem )
-	{
-		ConVar_Unregister();
-		DisconnectTier1Libraries();
-	}
-
-	g_pHardwareConfig = NULL;
-	g_pConfig = NULL;
+#if !defined( _PS3 )
 	g_pSLShaderSystem = NULL;
 #endif
 }

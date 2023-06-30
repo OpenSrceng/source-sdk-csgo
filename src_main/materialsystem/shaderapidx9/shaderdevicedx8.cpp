@@ -108,12 +108,7 @@ static ConVar mat_forcedynamic( "mat_forcedynamic", "0", FCVAR_CHEAT );
 // Turn this on to record frames that are longer than what CERT requires on the 360.
 ConVar mat_spew_long_frames( "mat_spew_long_frames", "0", 0, "warn about frames that go over 66ms for CERT purposes." );
 
-#if defined( _PS3 ) || defined( _OSX )
 extern ConVar mat_debugalttab;
-#else
-// this is hooked into the engines convar
-ConVar mat_debugalttab( "mat_debugalttab", "0", FCVAR_CHEAT );
-#endif
 
 //-----------------------------------------------------------------------------
 //
@@ -691,7 +686,7 @@ bool CShaderDeviceMgrDx8::ComputeCapsFromD3D( HardwareCaps_t *pCaps, int nAdapte
 		if ( pVendorID )
 		{
 			int nVendorID = V_atoi( pVendorID );	// use V_atoi for hex support
-			if ( pVendorID > 0 )
+			if ( pVendorID > (const char *)0 )
 			{
 				ident.VendorId = nVendorID;
 			}

@@ -276,9 +276,7 @@ protected:
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-#if defined( _PS3 ) || defined( _OSX )
 #define g_pShaderAPI ShaderAPI()
-#endif
 
 class CMatRenderContext : public CMatRenderContextBase
 {
@@ -819,12 +817,7 @@ inline IMesh* CMatRenderContext::CreateStaticMesh( VertexFormat_t vertexFormat, 
 
 inline void CMatRenderContext::SyncToken( const char *pToken )
 {
-#if !defined( _PS3 ) && !defined( _OSX )
-	if ( g_pShaderAPI )
-#endif
-	{
-		g_pShaderAPI->SyncToken( pToken );
-	}
+	g_pShaderAPI->SyncToken( pToken );
 }
 
 inline enum MaterialHeightClipMode_t CMatRenderContextBase::GetHeightClipMode( void )
@@ -842,9 +835,7 @@ inline CMaterialSystem *CMatRenderContext::GetMaterialSystem() const
 	return m_pMaterialSystem;
 }
 
-#if defined( _PS3 ) || defined( _OSX )
 #undef g_pShaderAPI
-#endif
 
 //-----------------------------------------------------------------------------
 

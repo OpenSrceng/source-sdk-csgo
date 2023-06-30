@@ -2573,10 +2573,8 @@ CShaderAPIDx8::CShaderAPIDx8() :
 	m_zPassSnapshot = -1;
 #endif
 
-#if defined( _PS3 ) || defined( _OSX )
 	g_pShaderAPI = this;
 	g_pShaderDevice = this;
-#endif
 
 #ifdef _PS3
 	//
