@@ -145,7 +145,6 @@ def configure(conf):
 		if conf.options.CFG == 'debug':
 			cflags += ['-O0','-g3']
 			cxxflags += ['-O0','-g3']
-			defines += ['DEBUG=1','_DEBUG=1']
 		elif conf.options.CFG == 'release':
 			cflags += ['-O3']
 			cxxflags += ['-O3']
@@ -156,8 +155,7 @@ def configure(conf):
 		else:
 			conf.fatal('cfg not found')
 
-		if conf.options.CFG != 'debug':
-			defines += ['NDEBUG=1']
+		defines += ['NDEBUG=1']
 
 		if conf.options.PLATFORM_64BITS:
 			march += ['-m64']
