@@ -547,7 +547,7 @@ BEGIN_VS_SHADER_FLAGS( Spritecard, "Help for Spritecard", SHADER_NOT_EDITABLE )
 			if ( bZoomSeq2 || bFog )
 			{
 				float flZScale=1.0/(params[ZOOMANIMATESEQ2]->GetFloatValue());
-				float C0[4]={ 0.5*(1.0+flZScale), flZScale, params[VERTEXFOGAMOUNT]->GetFloatValue(), 0 };
+				float C0[4]={ (float)(0.5*(1.0+flZScale)), flZScale, params[VERTEXFOGAMOUNT]->GetFloatValue(), 0 };
 				pShaderAPI->SetVertexShaderConstant( VERTEX_SHADER_SHADER_SPECIFIC_CONST_7, C0, ARRAYSIZE(C0)/4 );
 			}
 
@@ -557,7 +557,7 @@ BEGIN_VS_SHADER_FLAGS( Spritecard, "Help for Spritecard", SHADER_NOT_EDITABLE )
 
 			float VC0[8]={ params[MINSIZE]->GetFloatValue(), params[MAXSIZE]->GetFloatValue(),
 						   params[STARTFADESIZE]->GetFloatValue(), params[ENDFADESIZE]->GetFloatValue(),
-						   flStartFade, 1.0/(flMaxDistance-flStartFade),
+						   flStartFade, (float)(1.0/(flMaxDistance-flStartFade)),
 						   params[ALPHATRAILFADE]->GetFloatValue(),
 						   params[RADIUSTRAILFADE]->GetFloatValue() };
 
