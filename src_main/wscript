@@ -34,6 +34,7 @@ PROJECTS = [
 	'inputsystem',
 	'vphysics',
 	'materialsystem',
+	'datacache',
 	'engine/voice_codecs/minimp3',
 	'thirdparty/joltphysics',
 	'thirdparty/jpeg-9e',
