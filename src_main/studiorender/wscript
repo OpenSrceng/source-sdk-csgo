@@ -1,0 +1,62 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	conf.env.append_unique('DEFINES', ['STUDIORENDER_EXPORTS'])
+ 
+def build(bld):
+	sources = [
+		File	(['studiorender.cpp']),
+		File	(['studiorendercontext.cpp']),
+		File	(['flexrenderdata.cpp']),
+		File	(['r_studio.cpp']),
+		File	(['r_studiodecal.cpp']),
+		File	(['r_studiodraw.cpp']),
+		File	(['r_studiodraw_computeflexedvertex.cpp']),
+		File	(['r_studioflex.cpp']),
+		File	(['r_studiosubd.cpp']),
+		File	(['r_studiosubd_patches.cpp']),
+		File	(['r_studiogettriangles.cpp']),
+		File	(['r_studiolight.cpp']),
+		File	(['../public/tier0/memoverride.cpp'])
+	]
+
+	includes = []
+
+	libs = [
+		'tier0',
+		'tier1',
+		'tier2',
+		'tier3',
+		'interfaces',
+		'vstdlib',
+		'bitmap',
+		'mathlib'
+	]
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.shlib(
+		target   = 'studiorender',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		install_path = bld.env.BINDIR,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)

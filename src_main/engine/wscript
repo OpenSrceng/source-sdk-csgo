@@ -389,6 +389,7 @@ def build(bld):
 			'soundsystem_lowlevel',
 			'vgui_controls'
 		]
+
 	if not (bld.options.DEDICATED and bld.env.DEST_OS == 'linux'):
 		libs += [
 			'videocfg',

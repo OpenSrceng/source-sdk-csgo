@@ -2635,7 +2635,7 @@ int BuildFacesRenderedInfoListForMostRecentFrame( CUtlVector< IStudioRender::Fac
 		studiohwdata_t *pHwData = hash[ h ];
 		if ( pHwData->m_pStudioHdr )
 		{
-			IStudioRender::FacesRenderedInfo_t item = { pHwData->m_pStudioHdr, pHwData->m_NumFacesRenderedThisFrame, pHwData->m_NumTimesRenderedThisFrame };
+			IStudioRender::FacesRenderedInfo_t item = { pHwData->m_pStudioHdr, (unsigned int)pHwData->m_NumFacesRenderedThisFrame, (unsigned int)pHwData->m_NumTimesRenderedThisFrame };
 			items.AddToTail( item );
 			nTotal += pHwData->m_NumFacesRenderedThisFrame;
 		}

@@ -35,6 +35,7 @@ PROJECTS = [
 	'vphysics',
 	'materialsystem',
 	'datacache',
+	'studiorender',
 	'engine/voice_codecs/minimp3',
 	'thirdparty/joltphysics',
 	'thirdparty/jpeg-9e',
