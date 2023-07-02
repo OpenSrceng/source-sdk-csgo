@@ -185,15 +185,17 @@ def configure(conf):
 		conf.env.append_unique('LINKFLAGS', march + linkflags + flags)
 		conf.env.append_unique('DEFINES', defines)
 
-	includes = [
-		os.path.abspath('common'),
-		os.path.abspath('public'),
-		os.path.abspath('public/tier0'),
-		os.path.abspath('public/tier1'),
-		os.path.abspath('thirdparty/SDL2/include'),
-		os.path.abspath('thirdparty/openal-soft/include')
-	]
-	conf.env.append_unique('INCLUDES', includes)
+		includes = [
+			os.path.abspath('common'),
+			os.path.abspath('public'),
+			os.path.abspath('public/tier0'),
+			os.path.abspath('public/tier1'),
+			os.path.abspath('thirdparty/SDL2/include'),
+			os.path.abspath('thirdparty/openal-soft/include')
+		]
+		conf.env.append_unique('INCLUDES', includes)
+	else:
+		conf.fatal('Linux only!')
 
 	if conf.options.CCACHE:
 		conf.env.CC = conf.env.CCACHE + conf.env.CC
