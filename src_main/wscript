@@ -92,9 +92,10 @@ def configure(conf):
 
 	if conf.env.DEST_OS in 'linux':
 		cflags = ['-fPIC','-pthread']
-		cxxflags = ['-std=c++17']
+		cxxflags = []
 		linkflags = ['-Wl,--no-undefined','-pthread','-ldl','-no-canonical-prefixes','-Wl,--no-warn-mismatch']
 		flags = ['-fvisibility=hidden']
+		stdcpp = ['-std=c++17']
 		march = []
 		defines += ['GNUC','_DLL_EXT=.so','_LINUX','LINUX','_POSIX','POSIX','DX_TO_GL_ABSTRACTION','USE_SDL','GL_GLEXT_PROTOTYPES','AL_ALEXT_PROTOTYPES']
 		if not conf.options.SILENCE:
@@ -130,8 +131,7 @@ def configure(conf):
 			conf.check(lib='curl', uselib_store='curl')
 		conf.check(lib='z', uselib_store='zlib')
 
-		if conf.env.DEST_CPU in ['arm','aarch64']:
-			cflags += ['-fsigned-char']
+		cflags += ['-fsigned-char']
 
 		if conf.env.CC_NAME == 'gcc':
 			warnings += ['-fdiagnostics-color=always']
@@ -144,17 +144,14 @@ def configure(conf):
 			linkflags += ['-Wl,--unresolved-symbols=ignore-all']
 
 		if conf.env.CC_NAME == 'clang':
-			cxxflags += ['-stdlib=libstdc++']
+			stdcpp += ['-stdlib=libstdc++']
 
 		if conf.options.CFG == 'debug':
-			cflags += ['-O0','-g3']
-			cxxflags += ['-O0','-g3']
+			cflags += ['-O0','-g']
 		elif conf.options.CFG == 'release':
-			cflags += ['-O3']
-			cxxflags += ['-O3']
+			cflags += ['-O3','-fno-delete-null-pointer-checks']
 		elif conf.options.CFG == 'asan':
 			cflags += ['-O0','-g','-fsanitize=address']
-			cxxflags += ['-O0','-g','-fsanitize=address']
 			linkflags += ['-fsanitize=address']
 		else:
 			conf.fatal('cfg not found')
@@ -181,8 +178,8 @@ def configure(conf):
 			]
 
 		conf.env.append_unique('CFLAGS', march + cflags + warnings + flags)
-		conf.env.append_unique('CXXFLAGS', march + cflags + cxxflags + warnings + flags)
-		conf.env.append_unique('LINKFLAGS', march + linkflags + flags)
+		conf.env.append_unique('CXXFLAGS', march + cflags + cxxflags + warnings + flags + stdcpp)
+		conf.env.append_unique('LINKFLAGS', march + linkflags + flags + stdcpp)
 		conf.env.append_unique('DEFINES', defines)
 
 		includes = [
