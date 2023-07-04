@@ -42,6 +42,7 @@ PROJECTS = [
 	'vscript',
 	'vguimatsurface',
 	'vgui2/src',
+	'localize',
 	'thirdparty/freetype',
 	'thirdparty/fontconfig/src',
 	'thirdparty/joltphysics',

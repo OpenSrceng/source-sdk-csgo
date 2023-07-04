@@ -44,8 +44,7 @@ def build(bld):
 	]
 
 	includes = [
-		'../../thirdparty/freetype/include',
-#		'../../thirdparty/fontconfig'
+		'../../thirdparty/freetype/include'
 	]
 
 	libs = [
