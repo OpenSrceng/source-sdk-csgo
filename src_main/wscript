@@ -41,6 +41,7 @@ PROJECTS = [
 	'soundemittersystem',
 	'vscript',
 	'vguimatsurface',
+	'vgui2/src',
 	'thirdparty/freetype',
 	'thirdparty/fontconfig/src',
 	'thirdparty/joltphysics',
