@@ -1,0 +1,86 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	conf.env.append_unique('DEFINES', ['FT2_BUILD_LIBRARY'])
+
+def build(bld):
+	if bld.env.DEST_OS != 'linux':
+		return
+
+	sources = [
+		File	(['src/autofit/autofit.c']),
+		File	(['src/base/ftbase.c']),
+		File	(['src/base/ftbbox.c']),
+		File	(['src/base/ftbdf.c']),
+		File	(['src/base/ftbitmap.c']),
+		File	(['src/base/ftcid.c']),
+		File	(['src/base/ftfstype.c']),
+		File	(['src/base/ftgasp.c']),
+		File	(['src/base/ftglyph.c']),
+		File	(['src/base/ftgxval.c']),
+		File	(['src/base/ftinit.c']),
+		File	(['src/base/ftmm.c']),
+		File	(['src/base/ftotval.c']),
+		File	(['src/base/ftpatent.c']),
+		File	(['src/base/ftpfr.c']),
+		File	(['src/base/ftstroke.c']),
+		File	(['src/base/ftsynth.c']),
+		File	(['src/base/fttype1.c']),
+		File	(['src/base/ftwinfnt.c']),
+		File	(['src/bdf/bdf.c']),
+		File	(['src/bzip2/ftbzip2.c']),
+		File	(['src/cache/ftcache.c']),
+		File	(['src/cff/cff.c']),
+		File	(['src/cid/type1cid.c']),
+		File	(['src/gzip/ftgzip.c']),
+		File	(['src/lzw/ftlzw.c']),
+		File	(['src/pcf/pcf.c']),
+		File	(['src/pfr/pfr.c']),
+		File	(['src/psaux/psaux.c']),
+		File	(['src/pshinter/pshinter.c']),
+		File	(['src/psnames/psnames.c']),
+		File	(['src/raster/raster.c']),
+		File	(['src/sdf/sdf.c']),
+		File	(['src/sfnt/sfnt.c']),
+		File	(['src/smooth/smooth.c']),
+		File	(['src/svg/svg.c']),
+		File	(['src/truetype/truetype.c']),
+		File	(['src/type1/type1.c']),
+		File	(['src/type42/type42.c']),
+		File	(['src/winfonts/winfnt.c']),
+		File	(['src/base/ftsystem.c']),
+		File	(['src/base/ftdebug.c'])
+	]
+
+	includes = [
+		'include'
+	]
+
+	libs = []
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.stlib(
+		target   = 'freetype',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)

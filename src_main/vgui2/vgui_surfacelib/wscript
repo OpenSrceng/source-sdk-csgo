@@ -1,0 +1,51 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	pass
+
+def build(bld):
+	sources = [
+		File	(['BitmapFont.cpp']),
+		File	(['FontAmalgam.cpp']),
+		File	(['fontmanager.cpp']),
+		File	(['FontEffects.cpp']),
+		File	(['fonttexturecache.cpp']),
+		File	(['texturedictionary.cpp']),
+		File	(['Win32Font.cpp'], lambda x: x.env.DEST_OS == 'win32'),
+		File	(['osxfont.cpp'], lambda x: x.env.DEST_OS == 'darwin'),
+		File	(['linuxfont.cpp'], lambda x: x.env.DEST_OS == 'linux'),
+	]
+
+	includes = [
+		'../../thirdparty/freetype/include',
+		'../../thirdparty/fontconfig'
+	]
+
+	libs = []
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.stlib(
+		target   = 'vgui_surfacelib',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)

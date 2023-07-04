@@ -117,7 +117,7 @@ void CLinuxFont::CreateFontList()
 	const char *name;
 
     config = FcConfigGetCurrent();
-	FcConfigAppFontAddDir(config, "platform/vgui/fonts");
+	FcConfigAppFontAddDir(config, (FcChar8 *)"platform/vgui/fonts");
     pat = FcPatternCreate();
     os = FcObjectSetCreate();
     FcObjectSetAdd(os, FC_FILE);
@@ -194,7 +194,7 @@ static FcPattern* FontMatch(const char* type, FcType vtype, const void* value,
                 fcvalue.u.s = (FcChar8*) value;
                 break;
             case FcTypeInteger:
-                fcvalue.u.i = (int) value;
+                fcvalue.u.i = (intp) value;
                 break;
             default:
                 Assert(!"FontMatch unhandled type");
