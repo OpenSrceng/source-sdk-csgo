@@ -10,7 +10,9 @@
 /* #undef HAVE_ARC4RANDOM */
 
 /* Define to 1 if you have the `arc4random_buf' function. */
+#ifdef ANDROID
 #define HAVE_ARC4RANDOM_BUF
+#endif
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H
