@@ -15,7 +15,7 @@
 #include "ModInfo.h"
 #include "EngineInterface.h"
 #include "ixboxsystem.h"
-#include "KeyValues.h"
+#include "keyvalues.h"
 #include "BasePanel.h"
 #include "GameUI_Interface.h"
 #include "BonusMapsDialog.h"

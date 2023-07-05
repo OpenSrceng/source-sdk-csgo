@@ -16,7 +16,7 @@
 #include <vgui/IVGui.h>
 #include <vgui/MouseCode.h>
 #include <vgui/KeyCode.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 
 #include "URLButton.h"
 #include <vgui_controls/FocusNavGroup.h>

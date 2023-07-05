@@ -52,7 +52,7 @@ extern void longjmp( jmp_buf, int ) __attribute__((noreturn));
 	extern IEngineReplay *g_pEngine;
 #elif ENGINE_DLL
 	#include "engineinterface.h"
-#elif defined(CLIENT_DLL) || defined(GAME_DLL)
+#else
 	#include "cdll_int.h"
 	extern IVEngineClient *engine;
 #endif

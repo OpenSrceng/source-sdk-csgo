@@ -1,0 +1,54 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	pass
+
+def build(bld):
+	sources = [
+		File	(['png.c']),
+		File	(['pngerror.c']),
+		File	(['pngget.c']),
+		File	(['pngmem.c']),
+		File	(['pngpread.c']),
+		File	(['pngread.c']),
+		File	(['pngrio.c']),
+		File	(['pngrtran.c']),
+		File	(['pngrutil.c']),
+		File	(['pngset.c']),
+		File	(['pngtrans.c']),
+		File	(['pngwio.c']),
+		File	(['pngwrite.c']),
+		File	(['pngwtran.c']),
+		File	(['pngwutil.c'])
+	]
+
+	includes = []
+
+	libs = []
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.stlib(
+		target   = 'png',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)

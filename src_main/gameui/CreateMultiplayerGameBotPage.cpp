@@ -10,7 +10,7 @@
 
 using namespace vgui;
 
-#include <KeyValues.h>
+#include <keyvalues.h>
 #include <vgui_controls/ComboBox.h>
 #include <vgui_controls/CheckButton.h>
 #include <vgui_controls/Label.h>
@@ -19,7 +19,6 @@ using namespace vgui;
 #include "filesystem.h"
 #include "PanelListPanel.h"
 #include "scriptobject.h"
-#include <tier0/vcrmode.h>
 #include "tier1/convar.h"
 #include "EngineInterface.h"
 #include "CvarToggleCheckButton.h"

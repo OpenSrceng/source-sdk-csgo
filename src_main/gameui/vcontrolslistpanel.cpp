@@ -14,7 +14,7 @@
 #include <vgui/ISurface.h>
 #include <vgui/IVGui.h>
 #include <vgui/Cursor.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 
 // NVNT including for input system access
 #include "tier2/tier2.h"

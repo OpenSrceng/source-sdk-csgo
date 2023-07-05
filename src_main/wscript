@@ -7,6 +7,29 @@ import sys, os, optparse
 default_prefix = '../game'
 
 PROJECTS = [
+	# game
+	'gameui',
+
+	# launcher
+	'launcher_main',
+	'launcher',
+
+	# dlls
+	'engine',
+	'engine/voice_codecs/minimp3',
+	'filesystem',
+	'inputsystem',
+	'vphysics',
+	'materialsystem',
+	'datacache',
+	'studiorender',
+	'soundemittersystem',
+	'vscript',
+	'vguimatsurface',
+	'vgui2/src',
+	'localize',
+
+	# libs
 	'tier0',
 	'tier1',
 	'tier2',
@@ -28,26 +51,14 @@ PROJECTS = [
 	'videocfg',
 	'vpklib',
 	'vtf',
-	'launcher_main',
-	'launcher',
-	'engine',
-	'engine/voice_codecs/minimp3',
-	'filesystem',
-	'inputsystem',
-	'vphysics',
-	'materialsystem',
-	'datacache',
-	'studiorender',
-	'soundemittersystem',
-	'vscript',
-	'vguimatsurface',
-	'vgui2/src',
-	'localize',
+
+	# thirdparties
 	'thirdparty/freetype',
 	'thirdparty/fontconfig/src',
 	'thirdparty/joltphysics',
 	'thirdparty/jpeg-9e',
 	'thirdparty/libexpat/expat/lib',
+	'thirdparty/libpng-1.5.2',
 	'thirdparty/openal-soft',
 	'thirdparty/protobuf-2.5.0',
 	'thirdparty/quickhull',

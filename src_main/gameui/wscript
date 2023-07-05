@@ -1,0 +1,131 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	conf.env.append_unique('DEFINES', ['GAMEUI_EXPORTS'])
+ 
+def build(bld):
+	sources = [
+		File	(['BackgroundMenuButton.cpp']),
+		File	(['BasePanel.cpp']),
+		File	(['GameConsole.cpp']),
+		File	(['GameUI_Interface.cpp']),
+		File	(['LogoFile.cpp'], lambda x: x.env.DEST_OS == 'win32'),
+		File	(['ModInfo.cpp']),
+		File	(['MouseMessageForwardingPanel.cpp']),
+		File	(['../Tracker/common/msgbuffer.cpp'], lambda x: x.env.DEST_OS == 'win32'),
+		File	(['../Tracker/common/netapi.cpp'], lambda x: x.env.DEST_OS == 'win32'),
+		File	(['../common/GameUI/ObjectList.cpp']),
+		File	(['PanelListPanel.cpp']),
+		File	(['RunGameEngine.cpp']),
+		File	(['../common/GameUI/scriptobject.cpp']),
+		File	(['../Tracker/common/Socket.cpp'], lambda x: x.env.DEST_OS == 'win32'),
+		File	(['Sys_Utils.cpp']),
+		File	(['TextEntryBox.cpp']),
+		File	(['TGAImagePanel.cpp']),
+		File	(['../public/vgui_controls/vgui_controls.cpp']),
+		File	(['VGuiSystemModuleLoader.cpp']),
+		File	(['BonusMapsDatabase.cpp']),
+		File	(['../common/language.cpp']),
+		File	(['../common/imageutils.cpp']),
+		File	(['SaveGameBrowserDialog.cpp']),
+		File	(['gameui_util.cpp']),
+		File	(['BitmapImagePanel.cpp']),
+		File	(['CommandCheckButton.cpp']),
+		File	(['CvarNegateCheckButton.cpp']),
+		File	(['../common/GameUI/cvarslider.cpp']),
+		File	(['CvarTextEntry.cpp']),
+		File	(['CvarToggleCheckButton.cpp']),
+		File	(['HapticControlBox.cpp']),
+		File	(['KeyToggleCheckButton.cpp']),
+		File	(['LabeledCommandComboBox.cpp']),
+		File	(['URLButton.cpp']),
+		File	(['vcontrolslistpanel.cpp']),
+		File	(['BenchmarkDialog.cpp']),
+		File	(['BonusMapsDialog.cpp']),
+		File	(['CommentaryDialog.cpp']),
+		File	(['CommentaryExplanationDialog.cpp']),
+		File	(['ContentControlDialog.cpp']),
+		File	(['CustomTabExplanationDialog.cpp']),
+		File	(['GameConsoleDialog.cpp']),
+		File	(['LoadGameDialog.cpp']),
+		File	(['MultiplayerAdvancedDialog.cpp']),
+		File	(['NewGameDialog.cpp']),
+		File	(['PlayerListDialog.cpp']),
+		File	(['SaveGameDialog.cpp']),
+		File	(['LoadCommentaryDialog.cpp']),
+		File	(['LoadingDialog.cpp']),
+		File	(['BaseSaveGameDialog.cpp']),
+		File	(['ChangeGameDialog.cpp'], lambda x: x.env.DEST_OS == 'win32'),
+		File	(['CreateMultiplayerGameBotPage.cpp']),
+		File	(['CreateMultiplayerGameDialog.cpp']),
+		File	(['CreateMultiplayerGameGameplayPage.cpp']),
+		File	(['CreateMultiplayerGameServerPage.cpp']),
+		File	(['OptionsDialog.cpp']),
+		File	(['OptionsSubAudio.cpp']),
+		File	(['OptionsSubDifficulty.cpp']),
+		File	(['OptionsSubGame.cpp']),
+		File	(['OptionsSubHaptics.cpp'], lambda x: x.env.DEST_OS == 'win32'),
+		File	(['OptionsSubKeyboard.cpp']),
+		File	(['OptionsSubMouse.cpp']),
+		File	(['OptionsSubMultiplayer.cpp']),
+		File	(['OptionsSubPortal.cpp']),
+		File	(['OptionsSubVideo.cpp']),
+		File	(['OptionsSubVoice.cpp']),
+		File	(['../public/tier0/memoverride.cpp'])
+	]
+
+	includes = [
+		'../common/GameUI'
+	]
+
+	libs = [
+		'tier0',
+		'tier1',
+		'tier2',
+		'tier3',
+		'interfaces',
+		'vstdlib',
+		'bitmap',
+		'mathlib',
+		'matsys_controls',
+		'vgui_controls',
+		'vtf',
+		'vpklib',
+		'jpeg',
+		'png',
+		'zlib',
+		'steam_api'
+	]
+
+	if not bld.options.DEDICATED:
+		libs += [
+			'png'
+		]
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.shlib(
+		target   = 'gameui',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		install_path = bld.env.BINDIR,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)

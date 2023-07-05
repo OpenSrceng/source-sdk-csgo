@@ -12,7 +12,7 @@
 #include <vgui/ILocalize.h>
 #include <vgui/ISurface.h>
 #include <vgui_controls/ListPanel.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 #include <vgui_controls/Label.h>
 #include <vgui_controls/Button.h>
 #include <vgui_controls/MessageBox.h>
@@ -27,8 +27,6 @@
 #include "fmtstr.h"
 
 #include "filesystem.h"
-
-#include <tier0/vcrmode.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"

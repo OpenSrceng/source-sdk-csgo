@@ -10,7 +10,7 @@
 #include <vgui/ILocalize.h>
 #include <vgui/ISurface.h>
 #include <vgui_controls/ListPanel.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 #include <vgui_controls/Label.h>
 #include <vgui_controls/Button.h>
 #include <vgui_controls/MessageBox.h>

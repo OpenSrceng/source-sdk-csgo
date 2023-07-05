@@ -13,8 +13,8 @@
 #include "LoadingDialog.h"
 #include "vgui/ISurface.h"
 
-#include "KeyValues.h"
-#include "vgui/VGUI.h"
+#include "keyvalues.h"
+#include "vgui/vgui.h"
 #include "vgui/IVGui.h"
 #include "vgui_controls/Panel.h"
 #include "convar.h"

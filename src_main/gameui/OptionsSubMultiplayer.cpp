@@ -17,7 +17,7 @@
 #include <vgui_controls/Button.h>
 #include <vgui_controls/QueryBox.h>
 #include <vgui_controls/CheckButton.h>
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include <vgui_controls/Label.h>
 #include <vgui/ISystem.h>
 #include <vgui/ISurface.h>
@@ -547,7 +547,7 @@ void CrosshairImagePanelCS::Paint()
 	int centerY = tall / 2;
 
 	int iBarSize = RoundFloatToInt(m_barSize * screenTall / 480.0f);
-	int iBarThickness = max(1, RoundFloatToInt(m_barThickness * (float)screenTall / 480.0f));
+	int iBarThickness = MAX(1, RoundFloatToInt(m_barThickness * (float)screenTall / 480.0f));
 
 	float fBarGap = 4.0f;
 	if ( bDynamic )
@@ -1681,8 +1681,8 @@ static void PaletteHueReplace( RGBQUAD *palSrc, int newHue, int Start, int end )
 		g = palSrc[ i ].rgbGreen;
 		r = palSrc[ i ].rgbRed;
 		
-		maxcol = max( max( r, g ), b ) / 255.0f;
-		mincol = min( min( r, g ), b ) / 255.0f;
+		maxcol = MAX( MAX( r, g ), b ) / 255.0f;
+		mincol = MIN( MIN( r, g ), b ) / 255.0f;
 		
 		val = maxcol;
 		sat = (maxcol - mincol) / maxcol;

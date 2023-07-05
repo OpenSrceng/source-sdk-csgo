@@ -16,7 +16,7 @@
 #include "vgui_controls/AnimationController.h"
 #include "vgui_controls/ImagePanel.h"
 #include "filesystem.h"
-#include "KeyValues.h"
+#include "keyvalues.h"
 #include "ModInfo.h"
 #include "EngineInterface.h"
 #include "GameUI_Interface.h"

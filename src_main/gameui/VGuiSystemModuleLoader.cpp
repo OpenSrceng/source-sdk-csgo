@@ -15,7 +15,7 @@
 #include <vgui/ISystem.h>
 #include <vgui/IVGui.h>
 #include <vgui/ILocalize.h>
-#include <KeyValues.h>
+#include <keyvalues.h>
 
 #include <vgui_controls/Controls.h>
 #include <vgui_controls/Panel.h>

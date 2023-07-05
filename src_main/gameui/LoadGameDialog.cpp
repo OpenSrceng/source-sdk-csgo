@@ -11,7 +11,7 @@
 #include "vgui/ISystem.h"
 #include "vgui/ISurface.h"
 #include "vgui/IVGui.h"
-#include "KeyValues.h"
+#include "keyvalues.h"
 #include "filesystem.h"
 
 #include "vgui_controls/Button.h"

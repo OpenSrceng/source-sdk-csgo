@@ -13,7 +13,7 @@
 #pragma once
 #endif
 
-#include "KeyValues.h"
+#include "keyvalues.h"
 #include <vgui_controls/QueryBox.h>
 
 class CCvarTextEntry;

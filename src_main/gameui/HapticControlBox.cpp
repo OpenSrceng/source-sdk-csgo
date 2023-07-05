@@ -5,7 +5,7 @@
 #include "cvarslider.h"
 #include "mathlib/vmatrix.h"
 #include <vgui/ISurface.h>
-#include "KeyValues.h"
+#include "keyvalues.h"
 #include <vgui/ISystem.h>
 ControlBoxVisual::ControlBoxVisual(vgui::Panel *parent,const char *panelName, CCvarSlider *n, CCvarSlider *r, CCvarSlider *u, CCvarSlider *f, CCvarSlider *l, CCvarSlider *d) :
 BaseClass(parent,panelName)

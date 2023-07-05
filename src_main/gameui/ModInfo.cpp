@@ -7,7 +7,7 @@
 
 
 #include "ModInfo.h"
-#include "KeyValues.h"
+#include "keyvalues.h"
 #include "vgui_controls/Controls.h"
 #include "filesystem.h"
 #include "EngineInterface.h"

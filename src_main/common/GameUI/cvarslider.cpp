@@ -7,7 +7,7 @@
 //=============================================================================//
 #include "cvarslider.h"
 #include <stdio.h>
-#include "tier1/KeyValues.h"
+#include "tier1/keyvalues.h"
 #include "tier1/convar.h"
 #include <vgui/IVGui.h>
 #include <vgui_controls/PropertyPage.h>
