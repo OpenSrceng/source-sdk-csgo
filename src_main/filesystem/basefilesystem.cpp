@@ -1565,6 +1565,25 @@ void CBaseFileSystem::AddSearchPath( const char *pPath, const char *pathID, Sear
 		}
 	}
 
+	// scan for vpk's
+	for( int i = 1 ; i < 99; i++ )
+	{
+		char newVPK[MAX_PATH];
+		sprintf( newVPK, "%s/pak%02d_dir.vpk", pPath, i );
+		// we will fopen to bypass pathing, etc
+		FILE *pstdiofile = fopen( newVPK, "rb" );
+		if ( pstdiofile )
+		{
+			fclose( pstdiofile );
+			sprintf( newVPK, "%s/pak%02d.vpk", pPath, i );
+			AddVPKFile( newVPK, pathID, addType );
+		}
+		else
+		{
+			break;
+		}
+	}
+
 	if ( currCount != m_SearchPaths.Count() )
 	{
 #if !defined( DEDICATED )
