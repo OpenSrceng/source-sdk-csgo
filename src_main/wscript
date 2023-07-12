@@ -9,6 +9,7 @@ default_prefix = '../game'
 PROJECTS = [
 	# game
 	'gameui',
+	'matchmaking/cstrike15',
 
 	# launcher
 	'launcher_main',
@@ -43,6 +44,7 @@ PROJECTS = [
 	'bitmap',
 	'bonesetup',
 	'dmxloader',
+	'matchmaking',
 	'soundsystem/lowlevel',
 	'steam',
 	'vgui2/matsys_controls',

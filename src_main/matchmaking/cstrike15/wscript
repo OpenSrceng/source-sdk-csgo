@@ -1,0 +1,63 @@
+#! /usr/bin/env python
+
+class File:
+	def __init__(self, name, fnFilter = None):
+		self.name = name
+		self.fnFilter = fnFilter
+	def is_enabled(self, ctx):
+		if self.fnFilter:
+			return self.fnFilter(ctx)
+		return True
+
+def options(opt):
+	pass
+
+def configure(conf):
+	conf.env.append_unique('DEFINES', ['NO_STEAM_GAMECOORDINATOR','MATCHMAKING_DLL'])
+	if conf.env.DEST_OS == 'win32':
+		conf.env.append_unique('DEFINES', ['NO_STRING_T','VECTOR','strncpy=use_Q_strncpy_instead','_snprintf=use_Q_snprintf_instead'])
+
+def build(bld):
+	sources = [
+		File	(['mm_title.cpp']),
+		File	(['mm_title_gamesettingsmgr.cpp']),
+		File	(['mm_title_main.cpp']),
+		File	(['mm_title_richpresence.cpp']),
+		File	(['mm_title_titledata.cpp']),
+		File	(['../../game/shared/cstrike15/gametypes.cpp']),
+		File	(['../../common/platforminputdevice.cpp']),
+		File	(['../../public/tier0/memoverride.cpp'])
+	]
+
+	includes = [
+		'../../common/xlast_csgo',
+		'../../gcsdk/steamextra',
+		'../../thirdparty/protobuf-2.5.0/src'
+	]
+
+	libs = [
+		'tier0',
+		'tier1',
+		'tier2',
+		'interfaces',
+		'vstdlib',
+		'mathlib',
+		'matchmaking_base',
+		'steam_api'
+	]
+
+	sources_platform = []
+	for i in sources:
+		if not i.is_enabled(bld):
+			continue
+		sources_platform += i.name
+
+	bld.shlib(
+		target   = 'matchmaking',
+		features = 'c cxx',
+		source   = sources_platform,
+		includes = includes,
+		use      = libs,
+		install_path = bld.env.BINDIR,
+		subsystem = bld.env.MSVC_SUBSYSTEM
+	)
