@@ -43,6 +43,7 @@ def build(bld):
 		'vstdlib',
 		'mathlib',
 		'matchmaking_base',
+		'gcsdk',
 		'steam_api'
 	]
 
