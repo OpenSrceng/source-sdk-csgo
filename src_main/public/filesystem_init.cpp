@@ -260,6 +260,13 @@ const char *FileSystem_GetLastErrorString()
 }
 
 
+void AddGameBinDir( IFileSystem *pFileSystem, const char *pLocation, bool bForceHead = false )
+{
+	char temp[MAX_PATH];
+	Q_snprintf( temp, sizeof(temp), "%s%cbin", pLocation, CORRECT_PATH_SEPARATOR );
+	pFileSystem->AddSearchPath( temp, "GAMEBIN", bForceHead ? PATH_ADD_TO_HEAD : PATH_ADD_TO_TAIL );
+}
+
 KeyValues* ReadKeyValuesFile( const char *pFilename )
 {
 	// Read in the gameinfo.txt file and null-terminate it.
@@ -519,6 +526,9 @@ static void FileSystem_AddLoadedSearchPath(
 		V_StrSubst( fullLocationPath, "_english", szLangString, szPath, sizeof( szPath ), true );
 		initInfo.m_pFileSystem->AddSearchPath( szPath, pPathID, PATH_ADD_TO_TAIL );		
 	}
+
+	// Add gamebin search paths automatically.
+	AddGameBinDir( initInfo.m_pFileSystem, fullLocationPath );
 
 	initInfo.m_pFileSystem->AddSearchPath( fullLocationPath, pPathID, PATH_ADD_TO_TAIL );
 }
